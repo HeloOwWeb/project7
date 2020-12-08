@@ -1,0 +1,43 @@
+<mat-dialog-content>
+  <header>
+    <div class="head">
+      <h1 mat-dialog-title>Ajouter une publication</h1>
+      <mat-dialog-actions>
+        <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </header>
+  <main>
+    <form [formGroup]="publicationFormCreate" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Ecrivez votre texte ...</mat-label>
+        <textarea matInput formControlName="textPost"></textarea>
+      </mat-form-field>
+      <!-----ZONE UPLOAD---->
+      <input type="file" (change)="fileSelect($event)" />
+      <!--------VISUALISATION UPLOAD-------------->
+      <img [src]="filePreview" alt="Visualisation du fichier sélectionné" *ngIf="uploadOK" />
+      <!--------ZONE SELECTION TEXTE GIFS-------------->
+      <mat-form-field>
+        <input matInput type="text" [placeholder]="textSearchGif" (change)="change($event)" />
+      </mat-form-field>
+      <mat-dialog-actions (click)="searchGiphy()"><mat-icon>search</mat-icon></mat-dialog-actions>
+      <!--------VISUALISATION GIFS-------------->
+      <div *ngIf="!selectGifOK">
+        <div *ngIf="tabGif$ | async as objet">
+          <img *ngFor="let valeur of objet;" [src]="valeur" (click)="selectGifID(valeur)" />
+        </div>
+      </div>
+      <!--------VISUALISATION GIF SELECTIONNE-------------->
+      <div *ngIf="selectGifOK">
+        <img src="{{urlGIF}}" />
+      </div>
+      <!--------->
+      <mat-dialog-actions>
+        <button mat-stroked-button color="primary" type="submit" [disabled]="publicationFormCreate.invalid">Ajouter</button>
+      </mat-dialog-actions>
+    </form>
+  </main>
+</mat-dialog-content>
