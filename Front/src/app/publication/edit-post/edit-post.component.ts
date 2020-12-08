@@ -49,9 +49,8 @@ export class EditPostComponent implements OnInit {
 
   //Récupération des datas API GIPHY
   searchGiphy() {
-    //ré-initialiser le formData
+    //ré-initialiser le file
     if (this.filePreview) {
-      this.formData.delete('file');
       this.uploadOK = false;
     }    
     this.selectGifOK = false;
@@ -86,7 +85,7 @@ export class EditPostComponent implements OnInit {
     }    
     this.file = event.target.files[0];
     //Ajout du fichier dans FormData
-    this.formData.append('file', this.file, this.file.name);
+   /* this.formData.append('file', this.file, this.file.name);*/
     const reader = new FileReader();
     reader.onload = () => {
       this.filePreview = reader.result as string;
@@ -106,17 +105,25 @@ export class EditPostComponent implements OnInit {
   }
 
   onSubmit() {
+    //Récupération valeur du champs Texte
     const formValue = this.publicationFormCreate.value;
     const objectTextPost = new Publication(
       formValue['textPost']
     );
-    const objectPost = {
-      'token': this.token,
+    //Création du détails Publiation
+    const detailsPost = {
+      /*'token': this.token,*/
       'textPost': objectTextPost.textPost,
-      'gifPost': this.urlGIF,
-      'imagePost': this.formData
+      'gifPost': this.urlGIF
     };
-    this.publicationService.create(objectPost)
+    //Agrément du FormData
+    this.formData.append('post', JSON.stringify(detailsPost));
+    this.formData.append('image', this.file);
+    //CONSOLE LOG
+    console.log(this.formData.get('image'));
+    console.log(this.formData.get('post'));
+    //Envoi de la publication
+    this.publicationService.create(this.formData)
       .subscribe(
         response => {
           console.log(response);

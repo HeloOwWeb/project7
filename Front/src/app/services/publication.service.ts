@@ -11,8 +11,8 @@ export class PublicationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  create(objectPost: any){
-    return this.httpClient.post((this.url + 'api/posts'), objectPost);
+  create(formData: any){
+    return this.httpClient.post((this.url + 'api/posts'), formData);
   }
 
   //Récupère les publications
