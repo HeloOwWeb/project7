@@ -4,11 +4,10 @@
 const multer = require('multer');
 //3 mimes types possibles du front
 const MIME_TYPES = {
-    'upload/jpg': 'jpg',
-    'upload/jpeg': 'jpg',
-    'upload/png': 'png',
-    'upload/gif': 'gif',
-    'upload/mp4': 'mp4'
+    'image/jpg': 'jpg',
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/gif': 'gif'
 };
 
 // config de lespace storage
@@ -33,4 +32,4 @@ const storage = multer.diskStorage({
 //appeler la methode multer avec notre objet storage
 //on précise que c'est un fichier unique et non un groupe
 //et on précise que ce n'est que des images uniquemt
-module.exports = multer({ storage }).single('upload_file');
+module.exports = multer({ storage: storage }).single('image');

@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 
 const corsOptions = {
     origin: "http://localhost:4200",
@@ -35,6 +36,8 @@ const db = require('./config/config.js');
 db.sequelize.sync({ force: true }).then(() => {
     console.log('Synchronise');
 });
+
+app.use('/upload', express.static(path.join(__dirname, 'uplaod')));
 
 //Route
 require('./route/user.js')(app);

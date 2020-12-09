@@ -25,10 +25,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         //Systeme de like/dislike de la publication
         tabDislikes: {
-            type: Sequelize.JSON
+            type: Sequelize.JSON,
+            defaultValue: []
         },
         tabLikes: {
-            type: Sequelize.JSON
+            type: Sequelize.JSON,
+            defaultValue: []
         },
         dislikes: {
             type: Sequelize.INTEGER,

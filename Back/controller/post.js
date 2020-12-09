@@ -2,12 +2,18 @@
 
 const db = require('../config/config.js');
 const Post = db.post;
+const UserID = require('../middleware/getUserId.js');
 
 //POST Create Publication
 exports.create = (req, res) => {
+    //extraction PostFormData
+    const postObj = req.body;
+    //Analyse de l'objet
     const post = {
-        gifPost: req.body.gifPost,
-        textPost: req.body.textPost
+        userId : UserID(req),
+        textPost: postObj.textPost,
+        gifPost: postObj.gifPost,
+        imagePost: `${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
     };
 
     // Sauvegarde la publication dans la DB

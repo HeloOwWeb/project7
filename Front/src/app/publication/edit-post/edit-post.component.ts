@@ -23,7 +23,7 @@ export class EditPostComponent implements OnInit {
   loadingUpload: boolean = false;
   file!: File;
   filePreview!: string;
-  formData = new FormData();
+  data = new FormData();
   uploadOK: boolean = false;
   //------------GIPHY
   //récupération du texte Giphy
@@ -50,9 +50,9 @@ export class EditPostComponent implements OnInit {
   //Récupération des datas API GIPHY
   searchGiphy() {
     //ré-initialiser le file
-    if (this.filePreview) {
+/*    if (this.filePreview) {
       this.uploadOK = false;
-    }    
+    }    */
     this.selectGifOK = false;
     //RECHERCHE ET RECUP Gif
     this.tabGif$ =
@@ -79,13 +79,12 @@ export class EditPostComponent implements OnInit {
   //--------------------------------------------------------------------------UPLOAD IMG/PNG/GIF
   fileSelect(event: any) {
     //ré-initialiser Gif!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (this.urlGIF) {
+/*    if (this.urlGIF) {
       this.selectGifOK = false;
-      /*this.tabGif$ = ;*/
-    }    
+      *//*this.tabGif$ = ;*//*
+    } */   
     this.file = event.target.files[0];
-    //Ajout du fichier dans FormData
-   /* this.formData.append('file', this.file, this.file.name);*/
+    //Lecteur et ajout de l'objt pour visualisation
     const reader = new FileReader();
     reader.onload = () => {
       this.filePreview = reader.result as string;
@@ -94,7 +93,6 @@ export class EditPostComponent implements OnInit {
     this.uploadOK = true;
   }
   //--------------------------------------------------------------------------PUBLICATION
-  //--------------------------------------------------------------------------FIN PUBLICATION
   //ENVOI de la publication en POST
   // gifPost = urlGIF (null par défaut)
   // imagePost = objet (null par défaut)
@@ -107,23 +105,22 @@ export class EditPostComponent implements OnInit {
   onSubmit() {
     //Récupération valeur du champs Texte
     const formValue = this.publicationFormCreate.value;
-    const objectTextPost = new Publication(
-      formValue['textPost']
-    );
+    const text = formValue['textPost'];
     //Création du détails Publiation
     const detailsPost = {
       /*'token': this.token,*/
-      'textPost': objectTextPost.textPost,
+      'textPost': formValue['textPost'],
       'gifPost': this.urlGIF
     };
+    console.log(detailsPost);
+
     //Agrément du FormData
-    this.formData.append('post', JSON.stringify(detailsPost));
-    this.formData.append('image', this.file);
-    //CONSOLE LOG
-    console.log(this.formData.get('image'));
-    console.log(this.formData.get('post'));
+    this.data.append('textPost', JSON.stringify(text));
+    this.data.append('gifPost', JSON.stringify(this.urlGIF));
+    this.data.append('image', this.file);
+
     //Envoi de la publication
-    this.publicationService.create(this.formData)
+    this.publicationService.create(this.data)
       .subscribe(
         response => {
           console.log(response);
@@ -136,5 +133,5 @@ export class EditPostComponent implements OnInit {
           console.log("Une erreur est survenue: " + error.message);
         });
   }
-
+  //--------------------------------------------------------------------------FIN PUBLICATION
 }
