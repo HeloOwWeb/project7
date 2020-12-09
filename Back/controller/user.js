@@ -85,16 +85,6 @@ exports.login = (req, res, next) => {
         }).catch(error => res.status(500).json({ error }));
 };
 
-/*exports.findById = (req, res) => {
-    User.findById(verifAvecToken).then(() => {
-        User.findById(req.params.userId).then((user) => {
-            res.send(user);
-        });
-    }).catch((error) => {
-        res.status(401).send({ message: 'Veuillez vous identifier' }, error)
-    });
-};*/
-
 exports.findById = (req, res) => {
     User.findOne({ where: { id: verifAvecToken }}).then(() => {
         User.findOne({ where: { id: req.params.id }})
@@ -104,12 +94,6 @@ exports.findById = (req, res) => {
         res.status(401).send({ message: 'Veuillez vous identifier' }, error)
     });
 };
-
-/*exports.findById = (req, res) => {
-    User.findOne({ where: { id: verifAvecToken } }).then((user) => { res.status(200).send(user); })
-            .catch((error) => { res.status(500).send(error) });
-};*/
-
 
 exports.findAll = (req, res) => {
     User.findAll().then(users => {
