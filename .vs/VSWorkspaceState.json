@@ -1,8 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Back"
+    "\\Front",
+    "\\Front\\src",
+    "\\Front\\src\\app",
+    "\\Front\\src\\app\\auth",
+    "\\Front\\src\\app\\auth\\login",
+    "\\Front\\src\\app\\auth\\signup",
+    "\\Front\\src\\app\\publication",
+    "\\Front\\src\\app\\publication\\edit-post"
   ],
-  "SelectedNode": "\\Front",
+  "SelectedNode": "\\Front\\src\\app\\app-routing.module.ts",
   "PreviewInSolutionExplorer": false
 }
