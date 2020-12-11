@@ -1,0 +1,19 @@
+<form [formGroup]="userFormLogin" (ngSubmit)="onLogIn()">
+    <h1>Se connecter</h1>
+    <!-- Email -->
+      <label for="email">Votre adresse e-mail :</label>
+      <input type="email" id="email" placeholder="contact@gmail.com" formControlName="email">
+
+    <!-- Password -->
+      <mat-label for="password">Votre mot de passe :</mat-label>
+      <input type="password" id="password" placeholder="Mot de passe" formControlName="password">
+
+    <!-- Sign in button -->
+      <button type="submit" (click)="onLogIn()" [disabled]="userFormLogin.invalid">Valider</button>
+      <!--<p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>-->
+
+      <!-- Register -->
+      <p>
+        Vous n'avez pas encore votre accès ? <a routerLink="/auth/signup">Enregistrez-vous</a>
+      </p>
+</form>

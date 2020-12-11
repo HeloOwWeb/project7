@@ -1,0 +1,13 @@
+<button (click)="authLog()">Login</button>
+<button (click)="authSign()">Sign Up</button>
+<button (click)="authAdmin()">Admin</button>
+
+<div *ngIf="login">
+  <app-login></app-login>
+</div>
+<div *ngIf="signup">
+  <app-signup></app-signup>
+</div>
+<div *ngIf="admin">
+  <app-admin></app-admin>
+</div>

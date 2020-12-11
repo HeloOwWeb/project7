@@ -1,12 +1,12 @@
-export class User {
+/*export class User {
   constructor(
     private _token: string
   ) { }
 
-/*  //Méthode qui permet de récupérer le token
+*//*  //Méthode qui permet de récupérer le token
   get token() {
     return this._token;
-  }*/
+  }*//*
 
   private _userCurrent!: string;
   private random1!: string;
@@ -27,4 +27,33 @@ export class User {
   get token() {
     return this._userCurrent;
   }
+}
+*/
+
+export class User {
+  constructor(
+    public lastname: string,
+    public firstname: string,
+    public email: string,
+    public password: string,
+    public accordTermsOfUse: boolean
+  ) { }
+}
+
+export class Admin {
+  constructor(
+    public lastname: string,
+    public firstname: string,
+    public email: string,
+    public password: string,
+    public accordTermsOfUse: boolean,
+    public passwordAdmin: string
+  ) { }
+}
+
+export class Log {
+  constructor(
+    public email: string,
+    public password: string
+  ) { }
 }

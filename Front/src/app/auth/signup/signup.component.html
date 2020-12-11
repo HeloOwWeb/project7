@@ -1,0 +1,35 @@
+<form [formGroup]="userFormSign" (ngSubmit)="onSubmitForm()">
+    <h1>S'inscrire</h1>
+
+    <!-- NAME -->
+    <label for="lastname">Votre nom:</label>
+    <input type="text" id="lastname" formControlName="lastname" placeholder="OUPS">
+
+    <!-- SURNAME -->
+    <label for="firstname">Votre prénom:</label>
+    <input type="text" id="firstname" formControlName="firstname" placeholder="Samantha">
+
+    <!-- Email -->
+    <label for="email">Votre adresse e-mail :</label>
+    <input type="email" id="email" placeholder="contact@gmail.com" formControlName="email">
+
+    <!-- Confirmation Email -->
+    <label for="confEmail">Confirmez votre adresse e-mail :</label>
+    <input type="email" id="confEmail" placeholder="contact@gmail.com" formControlName="confEmail">
+
+    <!-- Password -->
+    <label for="password">Votre mot de passe :</label>
+    <input type="password" id="password" placeholder="Mot de passe" formControlName="password">
+
+    <!-- Confirmation Password -->
+    <label for="confPassword">Confirmez votre mot de passe :</label>
+    <input type="password" id="confPassword" placeholder="Mot de passe" formControlName="confPassword">
+
+    <!-- Validation des Conditions -->
+      <input type="checkbox" id="validConditionsUser" formControlName="accordTermsOfUse">
+      <label class="custom-control-label mb-2" for="validConditionsUser">J'accepte les <a href="#" target="_blank">conditions d'utilisation du réseau social</a></label>
+
+    <!-- Sign in button -->
+    <button type="submit" [disabled]="userFormSign.invalid">Valider</button>
+   <!-- <p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>-->
+</form>
