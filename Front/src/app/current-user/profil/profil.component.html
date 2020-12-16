@@ -1,0 +1,29 @@
+<main>
+  <!--------------------------en tete-->
+  <div>
+    <img src="{{ avatar }}" alt="Alternate Text" />
+    <h1><span>B</span>ienvenue sur votre profil {{ firstname }} !</h1>
+  </div>
+  <!--------------------------card-->
+  <div>
+    <div>
+      NOM : {{ lastname }} <br />
+      Prénom : {{ firstname }} 
+    </div>
+    <div>
+      Description : {{ description }}
+    </div>
+  </div>
+  <button (click)="modifyInfo()">Mofifier mes informations</button>
+  <mat-divider></mat-divider>
+  <div>
+    <h2>Vos publications</h2>
+    <mat-divider></mat-divider>
+    <app-publication-current></app-publication-current>
+  </div>
+  <div>
+    <mat-divider></mat-divider>
+    icone warning Attention (en rouge), cette action est définitive. Toutes vos publications et tous vos commentaires seront supprimés.
+  </div>
+  <button>Supprimer définitivement mon compte</button>
+</main>

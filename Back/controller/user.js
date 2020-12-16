@@ -4,7 +4,7 @@ const db = require('../config/config.js');
 const User = db.user;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const verifAvecToken = (req) => { return req.user.userId };
+const UserID = require('../middleware/getUserId.js');
 
 function maskEmail(email) {
     // Fonction pour remplacer l'email avec '*' -> RGDP
@@ -52,14 +52,14 @@ exports.create = (req, res) => {
                 password: hash,
                 accordTermsOfUse: req.body.accordTermsOfUse,
                 isAdmin: checkValueAdmin(req.body.passwordAdmin),
-                imageUrl: `${req.protocol}://${req.get('host')}/images/iconProfile.jpg`
+                imageUrl: `${req.protocol}://${req.get('host')}/upload/images/iconProfile.png`
             }).then(user => { res.send(user); });
         }).catch(error => res.status(500).json({ error }));
     
 };
 
 //POST Login
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
     User.findOne({ where: { email: maskEmail(req.body.email) } })
         .then(user => {
             if (!user) {
@@ -71,11 +71,11 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ error: 'Mot de passe incorrect.' });
                     }
                     res.status(200).json({
-                        userId: user._id,
+                        userId: user.id,
                         //Nouveau jeton
                         token: jwt.sign(
                             //Payload
-                            { userId: user._id },
+                            { userId: user.id },
                             'KEY_TOKEN_SECRET_GROUPOMANIA',
                             //Time jeton
                             { expiresIn: '24h' }
@@ -85,13 +85,16 @@ exports.login = (req, res, next) => {
         }).catch(error => res.status(500).json({ error }));
 };
 
-exports.findById = (req, res) => {
-    User.findOne({ where: { id: verifAvecToken }}).then(() => {
-        User.findOne({ where: { id: req.params.id }})
-            .then((user) => { res.status(200).send(user); })
-            .catch((error) => { res.status(500).send(error)});
-    }).catch((error) => {
-        res.status(401).send({ message: 'Veuillez vous identifier' }, error)
+exports.findCurrentUser = (req, res) => {
+    User.findOne({
+        where: { id: UserID(req) },
+        attributes: ["firstname", "lastname", "descriptif", "imageUrl"]
+    })
+        .then((user) => {
+            res.status(200).send(user);
+        })
+        .catch((error) => {
+            res.status(401).send({ message: 'Veuillez vous identifier !' }, error)
     });
 };
 

@@ -6,7 +6,7 @@ module.exports = function (app) {
     const auth = require('../middleware/auth.js');
     const multer = require('../middleware/multer-config.js');
 
-    app.post('/api/posts/', multer, posts.create);
-    app.get('/api/posts/', posts.findAll);
-    //auth a rajouter
+    app.post('/api/posts/', auth, multer, posts.create);
+    app.get('/api/posts/', auth, posts.findAll);
+    app.get('/api/posts/current', auth, posts.findCurrent);
 }

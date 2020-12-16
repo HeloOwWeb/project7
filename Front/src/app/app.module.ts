@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 //Component simple
 import { HeaderComponent } from './header/header.component';
@@ -16,11 +16,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserService } from './services/user.service';
 import { PublicationService } from './services/publication.service';
 import { GiphyService } from './services/giphy.service';
+import { CookieService } from 'ngx-cookie-service';
+import { InterceptorService } from './services/interceptor.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent    
+    HeaderComponent   
   ],
   imports: [
     BrowserModule,
@@ -32,9 +34,15 @@ import { GiphyService } from './services/giphy.service';
     MatButtonModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    },
     UserService,
     PublicationService,
-    GiphyService
+    GiphyService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,8 @@ import { GiphyService } from '../../services/giphy.service';
 import { Publication } from '../../models/Publication.model';
 import { PublicationService } from '../../services/publication.service';
 import { map, takeUntil } from 'rxjs/operators';
+import { UserService } from '../../services/user.service';
+import { KeyService } from '../../services/key.service';
 
 @Component({
   selector: 'app-edit-post',
@@ -13,17 +15,14 @@ import { map, takeUntil } from 'rxjs/operators';
 })
 
 export class EditPostComponent implements OnInit {
-
   //------------Formulaire
   publicationFormCreate!: FormGroup;
   errorMsg!: string;
-  token: string = "blouBlouBlou";
-
+  data = new FormData();
   //------------UPLOAD
   loadingUpload: boolean = false;
   file!: File;
   filePreview!: string;
-  data = new FormData();
   uploadOK: boolean = false;
   //------------GIPHY
   //récupération du texte Giphy
@@ -31,9 +30,10 @@ export class EditPostComponent implements OnInit {
   //réponse Giphy
   reponseGiphy: any;
   tabGif$!: Observable<any[]>;
+  responseGifOK = false;
   //sélectionner le gif
   selectGifOK = false;
-  urlGIF!: string;
+  urlGIF: string ='';
 
   constructor(private formBuilder: FormBuilder, private gifService: GiphyService, private publicationService: PublicationService) { }
 
@@ -50,10 +50,11 @@ export class EditPostComponent implements OnInit {
   //Récupération des datas API GIPHY
   searchGiphy() {
     //ré-initialiser le file
-/*    if (this.filePreview) {
+    if (this.filePreview) {
       this.uploadOK = false;
-    }    */
+    }    
     this.selectGifOK = false;
+    this.responseGifOK = true;
     //RECHERCHE ET RECUP Gif
     this.tabGif$ =
       this.gifService.searchGiphy(this.textSearchGif)
@@ -74,15 +75,19 @@ export class EditPostComponent implements OnInit {
   selectGifID(valeurID: string) {
     this.urlGIF = valeurID;
     this.selectGifOK = true;
+    this.responseGifOK = false;
+    //On a sélectionné le Gif donc annule et met à jour le formData Image en vide
+    this.data.delete('image');
   }
   //-------------------------------------------------------------------------FIN GIPHY
   //--------------------------------------------------------------------------UPLOAD IMG/PNG/GIF
   fileSelect(event: any) {
-    //ré-initialiser Gif!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/*    if (this.urlGIF) {
-      this.selectGifOK = false;
-      *//*this.tabGif$ = ;*//*
-    } */   
+    //ré-initialiser Gif
+    this.urlGIF = '';
+    this.selectGifOK = false;
+    this.responseGifOK = false;
+    this.textSearchGif = "";
+    //Gestion d'upload------------------------------
     this.file = event.target.files[0];
     //Lecteur et ajout de l'objt pour visualisation
     const reader = new FileReader();
@@ -91,11 +96,11 @@ export class EditPostComponent implements OnInit {
     };
     reader.readAsDataURL(this.file);
     this.uploadOK = true;
+    //Ajout du file dans le formData
+    this.data.append('image', this.file);
   }
   //--------------------------------------------------------------------------PUBLICATION
   //ENVOI de la publication en POST
-  // gifPost = urlGIF (null par défaut)
-  // imagePost = objet (null par défaut)
   initForm() {
     this.publicationFormCreate = this.formBuilder.group({
       textPost: ['']
@@ -106,18 +111,11 @@ export class EditPostComponent implements OnInit {
     //Récupération valeur du champs Texte
     const formValue = this.publicationFormCreate.value;
     const text = formValue['textPost'];
-    //Création du détails Publiation
-    const detailsPost = {
-      /*'token': this.token,*/
-      'textPost': formValue['textPost'],
-      'gifPost': this.urlGIF
-    };
-    console.log(detailsPost);
-
+//----------------------------------------------------
+    //Création Publiation
     //Agrément du FormData
-    this.data.append('textPost', JSON.stringify(text));
-    this.data.append('gifPost', JSON.stringify(this.urlGIF));
-    this.data.append('image', this.file);
+    this.data.append('textPost', text);
+    this.data.append('gifPost', this.urlGIF);
 
     //Envoi de la publication
     this.publicationService.create(this.data)

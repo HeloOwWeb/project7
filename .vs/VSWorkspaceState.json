@@ -1,15 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Front",
+    "\\Back",
+    "\\Back\\controller",
+    "\\Back\\middleware",
+    "\\Back\\model",
+    "\\Back\\route",
     "\\Front\\src",
     "\\Front\\src\\app",
-    "\\Front\\src\\app\\auth",
-    "\\Front\\src\\app\\auth\\login",
-    "\\Front\\src\\app\\auth\\signup",
-    "\\Front\\src\\app\\publication",
-    "\\Front\\src\\app\\publication\\edit-post"
+    "\\Front\\src\\app\\current-user\\profil",
+    "\\Front\\src\\app\\services"
   ],
-  "SelectedNode": "\\Front\\src\\app\\app-routing.module.ts",
+  "SelectedNode": "\\Back\\controller\\post.js",
   "PreviewInSolutionExplorer": false
 }

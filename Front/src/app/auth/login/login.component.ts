@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Log } from '../../models/User.model';
 import { UserService } from '../../services/user.service';
-import { SignupComponent } from '../signup/signup.component';
 
 @Component({
   selector: 'app-login',
@@ -37,8 +36,6 @@ export class LoginComponent implements OnInit {
       formValue['email'],
       formValue['password']);
     this.userService.loginUser(objectUserLogin)
-      .subscribe(data => {
-        console.log(data);
-      });
+      .subscribe(() => { console.log("good job ! " ); });
   }
 }

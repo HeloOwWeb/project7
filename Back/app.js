@@ -37,7 +37,7 @@ db.sequelize.sync({ force: true }).then(() => {
     console.log('Synchronise');
 });
 
-app.use('/upload', express.static(path.join(__dirname, 'uplaod')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 //Route
 require('./route/user.js')(app);

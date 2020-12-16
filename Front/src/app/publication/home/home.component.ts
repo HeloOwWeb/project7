@@ -1,6 +1,8 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Publication } from '../../models/Publication.model';
+import { PublicationService } from '../../services/publication.service';
 import { EditPostComponent } from '../edit-post/edit-post.component';
 
 @Component({
@@ -14,10 +16,13 @@ export class HomeComponent implements OnInit {
   widthDialogu: string = "100%";
   heightDialogu: string = "75%";
 
-  constructor(private dialog: MatDialog, public breakpointObserver: BreakpointObserver) { }
+  loadPublications: Publication[] = [];
+
+  constructor(private dialog: MatDialog, public breakpointObserver: BreakpointObserver, private publicationService : PublicationService) { }
 
   ngOnInit(): void {
     this.dialogWidthHeight();
+    this.allPost();
   }
 
   dialogWidthHeight() {
@@ -43,6 +48,13 @@ export class HomeComponent implements OnInit {
     dialogConfig.height = this.heightDialogu;
     //Insertion component dans popup
     this.dialog.open(EditPostComponent, dialogConfig);
+  }
+
+  allPost() {
+    this.publicationService.getAllPosts()
+      .subscribe(posts => {
+        this.loadPublications = posts;
+      });   
   }
 
 }
