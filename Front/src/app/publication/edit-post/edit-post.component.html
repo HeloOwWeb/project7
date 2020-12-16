@@ -25,7 +25,7 @@
       </mat-form-field>
       <mat-dialog-actions (click)="searchGiphy()"><mat-icon>search</mat-icon></mat-dialog-actions>
       <!--------VISUALISATION GIFS-------------->
-      <div *ngIf="!selectGifOK">
+      <div *ngIf="responseGifOK">
         <div *ngIf="tabGif$ | async as objet">
           <img *ngFor="let valeur of objet;" [src]="valeur" (click)="selectGifID(valeur)" />
         </div>

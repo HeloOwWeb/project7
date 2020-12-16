@@ -11,17 +11,17 @@ module.exports = (sequelize, Sequelize) => {
         },
         //Publication
         imagePost: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING, 
             //allowNull: true
         },
         //GIF
         gifPost: {
-            type: Sequelize.STRING,
-            allowNull: true
+            type: Sequelize.STRING
+            //allowNull: true
         },
         textPost: {
             type: Sequelize.TEXT,
-            allowNull: true
+            //allowNull: true
         },
         //Systeme de like/dislike de la publication
         tabDislikes: {

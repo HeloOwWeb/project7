@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GiphyService } from './giphy.service';
+import { KeyService } from '../key.service';
 
-describe('GiphyService', () => {
-  let service: GiphyService;
+describe('KeyService', () => {
+  let service: KeyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GiphyService);
+    service = TestBed.inject(KeyService);
   });
 
   it('should be created', () => {
