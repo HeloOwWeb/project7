@@ -37,6 +37,7 @@ db.sequelize.sync({ force: true }).then(() => {
     console.log('Synchronise');
 });
 
+// La discut' serveur au front
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 //Route

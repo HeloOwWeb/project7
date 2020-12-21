@@ -19,7 +19,7 @@ export class PublicationService {
 
   //Récupère les publications
   getAllPosts() {
-    return this.httpClient.get<Publication []>(this.url);
+    return this.httpClient.get<Publication[]>(this.url);
   }
 
   getAllPostsCurrent() {

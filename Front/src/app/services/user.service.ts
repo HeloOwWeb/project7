@@ -35,4 +35,9 @@ export class UserService {
     return this.httpClient.get<any[]>((this.url + 'users/current'));
   }
 
+  //Modifier la description et/ou la photo de profil par défaut
+  modifyInfoCurrentUser(infos: FormData): Observable<any>{
+    return this.httpClient.put((this.url + 'users/modify'), infos);
+  }
+
 }
