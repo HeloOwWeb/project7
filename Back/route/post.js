@@ -8,5 +8,5 @@ module.exports = function (app) {
 
     app.post('/api/posts/', auth, multer, posts.create);
     app.get('/api/posts/', auth, posts.findAll);
-    app.get('/api/posts/current', auth, posts.findCurrent);
+    app.get('/api/posts/current', auth, posts.findCurrent);   
 }

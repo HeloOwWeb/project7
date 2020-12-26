@@ -37,11 +37,13 @@ db.sequelize.sync({ force: true }).then(() => {
     console.log('Synchronise');
 });
 
+// La discut' serveur au front
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
-//Route
+//Routes
 require('./route/user.js')(app);
 require('./route/post.js')(app);
+require('./route/emotions.js')(app);
 
 //Exportation de l'application
 module.exports = app;

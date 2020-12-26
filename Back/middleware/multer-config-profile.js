@@ -1,5 +1,5 @@
 ﻿"use strict";
-//Discut' front au server
+
 //gestion des fichiers avec des requetes HTTP envoye vers notre API
 const multer = require('multer');
 //3 mimes types possibles du front
@@ -15,7 +15,7 @@ const MIME_TYPES = {
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         // pas eu d'erreur -> dossier
-        callback(null, 'upload')
+        callback(null, 'upload/profile')
     },
     filename: (req, file, callback) => {
         //creation du nom avec le nom d origine

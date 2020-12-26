@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CurrentUserRoutingModule } from './current-user-routing.module';
 import { ProfilComponent } from './profil/profil.component';
 import { CurrentUserComponent } from './current-user/current-user.component';
@@ -22,6 +23,8 @@ import { PublicationCurrentComponent } from './publication-current/publication-c
   imports: [
     CommonModule,
     CurrentUserRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatIconModule,
     MatButtonModule,

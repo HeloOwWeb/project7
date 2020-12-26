@@ -1,13 +1,21 @@
 # project7
 
-///////////////////////////////////////////profil
-
-fil d'actu: pagination / ordre date / pipe
-modification et delete
+----------------------- Publication : pagination front (back a vÃ©rifier)
+----------------------- Publication : modification
+----------------------- Emotions :
+- Primary Key pour que le userId / Publication soit unique
+- Compteur : front
 -----------------
 Commentaires
-Likes/Dislikes
+-----------------
+Profil : supprimer le compte
+Publication : supprimer la publication
+Commentaire: supprimer le commentaire
+Publication : voir l'erreur de property publications dans le model + pipe + Image Icon
 -----------------
 ADMIN
 -----------------
-Optimiser le visuel + responsive + sécurité + gestion des erreurs + reponses server
+Optimiser le visuel + responsive
+BACK FRONT : sï¿½curitï¿½ + gestion des erreurs + status + reponses server
+-----------------
+Documentation

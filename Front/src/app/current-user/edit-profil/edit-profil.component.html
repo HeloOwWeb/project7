@@ -1,22 +1,25 @@
 <mat-dialog-content>
-  <h1 mat-dialog-title>Modifier ses informations</h1>
-  <mat-dialog-actions>
-    <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-dialog-actions>
-  <form action="/" method="post">
+  <header>
+    <h1 mat-dialog-title>Modifier ses informations</h1>
+    <mat-dialog-actions>
+      <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-dialog-actions>
+  </header>
+  <form [formGroup]="putInfo" (ngSubmit)="onSubmit()">
     <!-----ZONE DESCRIPTION---->
     <mat-form-field>
       <mat-label>Modifiez votre description ...</mat-label>
-      <textarea></textarea>
+      <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
     <!-----ZONE IMAGE DE PROFIL---->
-    <input type="file" name="name" value="" />
+    <input type="file" (change)="fileSelect($event)" />
     <!-----VISUALISATION IMAGE DE PROFIL---->
-    <img src="#" alt="Votre nouvelle photo de profil" />
+    <img [src]="filePreview" alt="Votre nouvelle photo de profil" />
+    <!-----VALIDATION DU FORM---->
     <mat-dialog-actions>
-      <button>Valider les modifications</button>
+      <button mat-stroked-button color="primary" type="submit" [disabled]="putInfo.invalid">Valider les modifications</button>
     </mat-dialog-actions>
   </form>
 </mat-dialog-content>
