@@ -2,9 +2,9 @@
 
 module.exports = (sequelize, Sequelize) => {
     const Post = sequelize.define('post', {
-        //User Active qui crée la publication 
+        //User Active qui crÃ©e la publication 
         //--lien vers la table user
-        // Récupère Firstname + Lastname et imageUrl
+        // RÃ©cupÃ©re Firstname + Lastname et imageUrl
         userId: {
             type: Sequelize.STRING,
             allowNull: true
@@ -22,23 +22,6 @@ module.exports = (sequelize, Sequelize) => {
         textPost: {
             type: Sequelize.TEXT,
             //allowNull: true
-        },
-        //Systeme de like/dislike de la publication
-        tabDislikes: {
-            type: Sequelize.JSON,
-            defaultValue: []
-        },
-        tabLikes: {
-            type: Sequelize.JSON,
-            defaultValue: []
-        },
-        dislikes: {
-            type: Sequelize.INTEGER,
-            defaultValue: 0
-        },
-        likes: {
-            type: Sequelize.INTEGER,
-            defaultValue: 0
         }
     });
     return Post;

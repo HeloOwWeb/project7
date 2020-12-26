@@ -24,6 +24,14 @@ db.sequelize = sequelize;
 //Models/tables
 db.user = require('../model/users.js')(sequelize, Sequelize);
 db.post = require('../model/posts.js')(sequelize, Sequelize);
+db.emotions = require('../model/emotions.js')(sequelize, Sequelize);
 
+//Paramétrage des jointures_________________________________________________
+//Liaison Publications / Emotions
+db.post.hasMany(db.emotions, { as: "EmotionsPublication"});
+db.emotions.belongsTo(db.post, {
+  foreignKey: "postId",
+  as: "EmotionsPublication"
+});
 
 module.exports = db;
