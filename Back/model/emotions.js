@@ -6,10 +6,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             AllowNull: false
         },
-        /* idPublication: {
+        idPublication: {
             type: Sequelize.INTEGER,
             AllowNull: false
-        }, */
+        },
     //________________________________________________    
         isLike: {
             type: Sequelize.INTEGER,
@@ -43,30 +43,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             defaultValue: 0
         }
-    },
-    //__________________________________________________________
-    //
-    //Configuration la PrimaryKey Unique 
-     /* {
-        sequelize,
-        tableName: "emotions",
-        timestamps: false,
-        indexes: [{
-            name: "PRIMARY",
-            unique: true,
-            using: "BTREE",
-            fields: [{
-                name: "idUser"
-            },{
-                name: "idPublication"
-            }]
-        },
-        {
-            name: "fk_emotions_publications_idx",
-            using: "BTREE",
-            fields: [{name: "id"}]
-        }
-        ]
-    } */);
+    });
     return Emotions;
 }

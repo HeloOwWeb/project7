@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Publication } from '../../models/Publication.model';
 import { PublicationService } from '../../services/publication.service';
@@ -10,7 +12,8 @@ import { PublicationService } from '../../services/publication.service';
 })
 export class PublicationCurrentComponent implements OnInit {
 
-  loadPublications: Publication[] = [];
+  tabPublications$!: Observable<any>;
+  responsePublications: any;
 
   constructor(private publicationService: PublicationService) { }
 
@@ -19,9 +22,16 @@ export class PublicationCurrentComponent implements OnInit {
   }
 
   allPostCurrent() {
-    this.publicationService.getAllPostsCurrent()
-      .subscribe(posts => {
-        this.loadPublications = posts;
-      })
+    this.tabPublications$ = this.publicationService.getAllPostsCurrent()
+        .pipe( map (
+          datas => {
+            console.log(datas);
+            const tab = [];
+            this.responsePublications = datas;
+            for(let i=0; i <this.responsePublications.length; i++){
+              tab.push(this.responsePublications[i]);
+            }
+            return tab;
+        }));
   }
 }

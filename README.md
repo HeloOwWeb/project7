@@ -1,21 +1,27 @@
 # project7
 
------------------------ Publication : pagination front (back a vérifier)
------------------------ Publication : modification
------------------------ Emotions :
-- Primary Key pour que le userId / Publication soit unique
-- Compteur : front
+Route modification : erreur 200 ?
+
+Commentaire : FRONT modification
+
+----------------------- Publication : pagination front 
+----------------------- Emotions/Publications/Commentaires : rafraichir les elements sans F5
 -----------------
-Commentaires
------------------
+----------------- 
+SUPPRESSION
 Profil : supprimer le compte
 Publication : supprimer la publication
 Commentaire: supprimer le commentaire
-Publication : voir l'erreur de property publications dans le model + pipe + Image Icon
+Publication : voir l'erreur de property publications dans le model + pipe
+-----------------
+404 à faire (voir avec l'architecture en module s'il y a des différences)
 -----------------
 ADMIN
 -----------------
 Optimiser le visuel + responsive
-BACK FRONT : s�curit� + gestion des erreurs + status + reponses server
+BACK FRONT : sécurité (back/front/regex) + gestion des erreurs (back/front) + .status (back) 
+	+ reponses server (back) + désabonnement (front) + nettoyage code (ALL)
 -----------------
-Documentation
+Documentation accompagnant le MVP
+
+Front Emotions /Create Comments+BackModify/ ModiftPost

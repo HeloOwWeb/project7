@@ -1,9 +1,9 @@
-<main *ngIf="loadPublications.length >= 1">
-  <mat-card *ngFor="let post of loadPublications">
+<main *ngIf="tabPublications$ | async as objet">
+  <mat-card *ngFor="let post of objet;">
     <mat-card-header>
-      <div mat-card-avatar>Icone User</div>
-      <mat-card-title>Prénom et Nom du user</mat-card-title>
-      <mat-card-subtitle>{{ post.createdAt }}</mat-card-subtitle>
+      <img mat-card-avatar src={{post.UserPublications.imageUrl}} alt="Alternate" />
+      <mat-card-title>{{post.UserPublications.firstname}} {{post.UserPublications.lastname}}</mat-card-title>
+      <mat-card-subtitle>{{post.createdAt}}</mat-card-subtitle>
     </mat-card-header>
     <mat-divider></mat-divider>
     <img mat-card-image *ngIf="post.imagePost" src={{post.imagePost}} alt="Alternate Text" />
@@ -12,11 +12,34 @@
       <p *ngIf="post.textPost">{{ post.textPost }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>Dislikes {{ post.dislikes }}</button>
-      <button mat-button>Like {{ post.likes }}</button>
+      Like {{post.countLike}}
+      Love{{post.countHeart}}
+      Happy {{post.countSmile}}
+      LOL {{post.countLOL}}
+      Bravo {{post.countClap}}
+      Woah ! {{post.countWoah}}
+      Triste {{post.countSad}}
+      Colère {{post.countAngry}}
     </mat-card-actions>
-    <mat-card-footer>Commentaires</mat-card-footer>
+    <mat-card-footer>
+      <h2>Commentaires</h2>
+<!--       <button mat-fab aria-label="Ajouter un utilisateur" (click)="onCreateComment()" color="accent">
+        <mat-icon>person_add</mat-icon>
+      </button>-->
+        <div *ngFor="let comment of post.PublicationComments">
+          <img mat-card-avatar [src]="comment.UserComments.imageUrl" alt="Altenartive Text" />
+          <div>
+            <div>
+              <h3>{{comment.UserComments.firstname}} {{comment.UserComments.lastname}}</h3>
+              <p *ngIf="comment.autocollantComment">
+                <img [src]="comment.autocollantComment" alt="Alternative Text" />
+              </p>
+              <p>{{comment.textComment}}</p>
+            </div>
+          </div>
+        </div>
+    </mat-card-footer>
   </mat-card>
 </main>
 
-<p *ngIf="loadPublications.length < 1">Nous avons rencontré un problème lors du chargement des publications. Nous nous excusons pour la gêne occasionnée et nous vous invitons à revenir ultérieurement.</p>
+<p>Nous avons rencontré un problème lors du chargement des publications. Nous nous excusons pour la gêne occasionnée et nous vous invitons à revenir ultérieurement.</p>

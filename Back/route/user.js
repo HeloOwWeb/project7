@@ -9,8 +9,8 @@ module.exports = function (app) {
     app.post('/api/auth/signup', users.create);
     app.post('/api/auth/login', users.login);
     //Current User
-    app.get('/api/users/current', auth, users.findCurrentUser);
     app.put('/api/users/modify', auth, multerProfile, users.update);
+    app.get('/api/users/current', auth, users.findCurrentUser);
 
 
     app.get('/api/users', auth, users.findAll);

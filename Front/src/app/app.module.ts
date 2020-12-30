@@ -18,11 +18,14 @@ import { PublicationService } from './services/publication.service';
 import { GiphyService } from './services/giphy.service';
 import { CookieService } from 'ngx-cookie-service';
 import { InterceptorService } from './services/interceptor.service';
+import { CommentsService } from './services/comments.service';
+import { EmotionsService } from './services/emotions.service';
+import { KeyService } from './services/key.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent   
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,10 @@ import { InterceptorService } from './services/interceptor.service';
     UserService,
     PublicationService,
     GiphyService,
-    CookieService
+    CookieService,
+    CommentsService,
+    EmotionsService,
+    KeyService
   ],
   bootstrap: [AppComponent]
 })

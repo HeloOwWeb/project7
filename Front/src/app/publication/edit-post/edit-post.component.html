@@ -11,6 +11,9 @@
   </header>
   <main>
     <form [formGroup]="publicationFormCreate" (ngSubmit)="onSubmit()">
+      <div *ngIf="textPresent">
+          Voici le texte de la publication : {{ textArea }}
+      </div>
       <mat-form-field>
         <mat-label>Ecrivez votre texte ...</mat-label>
         <textarea matInput formControlName="textPost"></textarea>
@@ -19,6 +22,7 @@
       <input type="file" (change)="fileSelect($event)" />
       <!--------VISUALISATION UPLOAD-------------->
       <img [src]="filePreview" alt="Visualisation du fichier sélectionné" *ngIf="uploadOK" />
+      <img [src]="urlImage" alt="Alternative Texte" *ngIf="imageOK" />
       <!--------ZONE SELECTION TEXTE GIFS-------------->
       <mat-form-field>
         <input matInput type="text" [placeholder]="textSearchGif" (change)="change($event)" />
@@ -36,7 +40,8 @@
       </div>
       <!--------->
       <mat-dialog-actions>
-        <button mat-stroked-button color="primary" type="submit" [disabled]="publicationFormCreate.invalid">Ajouter</button>
+        <button *ngIf="!modifyOK" mat-stroked-button color="primary" type="submit" [disabled]="publicationFormCreate.invalid">Ajouter</button>
+        <button *ngIf="modifyOK" mat-stroked-button color="primary" type="submit" [disabled]="publicationFormCreate.invalid">Modifier</button>
       </mat-dialog-actions>
     </form>
   </main>
