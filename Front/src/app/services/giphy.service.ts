@@ -16,15 +16,27 @@ const urlGifID = 'https://api.giphy.com/v1/gifs/' + idGif + '?api_key=' + apiKey
   providedIn: 'root'
 })
 export class GiphyService {
-
   private apiKeyGiphy = 'rXJyJPJMUR2gXgQoT0I626vjs1ARMILl';
+  //____________________________________VARIABLES________________________________________________GIFS
   private baseUrl = 'https://api.giphy.com/v1/gifs/search?api_key=' + this.apiKeyGiphy + '&q=';
   private paramsUrl = '&limit=15&offset=0&rating=g&lang=fr';
+  //_____________________________________________________________________________________________FIN GIFS
+  //____________________________________VARIABLES________________________________________________STIKERS
+  private baseUrlSticker ='https://api.giphy.com/v1/stickers/search?api_key='+ this.apiKeyGiphy + '&q=';
+  private paramsUrlSticker = '&limit=20&offset=0&rating=g&lang=fr'
 
   constructor(private httpClient: HttpClient) { }
 
+  //_____________________________________________________________________________________________GIFS
   //RECHERCHE
   searchGiphy(textSearchObj: string): Observable<any> {
-    return this.httpClient.get(this.baseUrl + textSearchObj + this.paramsUrl)
+    return this.httpClient.get(this.baseUrl + textSearchObj + this.paramsUrl);
   }
+  //_____________________________________________________________________________________________FIN GIFS
+  //_____________________________________________________________________________________________STIKERS
+  //RECHERCHE
+  searchStickers(textSearchObj: string): Observable<any> {
+    return this.httpClient.get(this.baseUrlSticker + textSearchObj + this.paramsUrlSticker);
+  }
+  //_____________________________________________________________________________________________FIN STIKERS
 }

@@ -5,9 +5,12 @@ module.exports = (sequelize, Sequelize) => {
         //User Active qui crée la publication 
         //--lien vers la table user
         // Récupére Firstname + Lastname et imageUrl
-        userId: {
-            type: Sequelize.STRING,
-            allowNull: true
+        actualUserOK: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: 0
+        },
+        idUserPost:{
+            type : Sequelize.INTEGER
         },
         //Publication
         imagePost: {
@@ -21,6 +24,47 @@ module.exports = (sequelize, Sequelize) => {
         },
         textPost: {
             type: Sequelize.TEXT,
+            //allowNull: true
+        },
+        //_________________________Compteurs Emotions
+        countLike: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countClap: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countSad: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countSmile: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countAngry: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countHeart: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countLOL: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+            //allowNull: true
+        },
+        countWoah: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
             //allowNull: true
         }
     });

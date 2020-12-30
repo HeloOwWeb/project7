@@ -22,9 +22,6 @@ export class HomeComponent implements OnInit {
   isLoad: boolean = false;
   tabPublications$!: Observable<any>;
   responsePublications: any;
-  //_____EMOTIONS_____________________
-  responseEmotions: any;
-  totalLike: number= 0;
 
   constructor(private dialog: MatDialog,
     public breakpointObserver: BreakpointObserver,
@@ -45,7 +42,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onCreateUser() {
+  onActionPost(actionButton: string, id: string) {
     //Configuration de la fenetre modal
     const dialogConfig = new MatDialogConfig();
     //Paramétrage fermeture - click en dehors accepte
@@ -56,6 +53,7 @@ export class HomeComponent implements OnInit {
     //Taille de la popup
     dialogConfig.width = this.widthDialogu;
     dialogConfig.height = this.heightDialogu;
+    dialogConfig.data = { action : actionButton, idPost : id };
     //Insertion component dans popup
     this.dialog.open(EditPostComponent, dialogConfig);
   }
@@ -64,41 +62,18 @@ export class HomeComponent implements OnInit {
     this.tabPublications$ = this.publicationService.getAllPosts()
         .pipe( map (
           datas => {
+            console.log(datas);
             const tab = [];
-            let value = 0;
             this.responsePublications = datas.publications;
-          for(let i=0; i <this.responsePublications.length; i++){
-            tab.push(this.responsePublications[i]);
-
-            this.responseEmotions =this.responsePublications[i].EmotionsPublication;
-            for ( let j=0; j< this.responseEmotions.length; j++){
-              value += this.responseEmotions[j].isLike;
-              this.totalLike = value;
+            for(let i=0; i <this.responsePublications.length; i++){
+              tab.push(this.responsePublications[i]);
             }
-          }
-          console.log(tab);
-          console.log(this.responseEmotions);
-          console.log(this.totalLike);
-          return tab;
+            return tab;
         }));
   }
 
-  onLike(idPost : number){
-    console.log(idPost);
-    const etatLike = { "like" : +1 };
-    this.publicationService.sendLike(etatLike, idPost)
-    .subscribe( response => {
-      console.log(response);
-    });
-  }
-
-  onDislike(idPost : number){
-    console.log(idPost);
-    const etatLike = { "like" : -1 };
-    this.publicationService.sendLike(etatLike, idPost)
-    .subscribe( response => {
-      console.log(response);
-    });
+  delete(id: string){
+    console.log(id);
   }
 }
 

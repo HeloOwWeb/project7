@@ -44,6 +44,7 @@ app.use('/upload', express.static(path.join(__dirname, 'upload')));
 require('./route/user.js')(app);
 require('./route/post.js')(app);
 require('./route/emotions.js')(app);
+require('./route/comment.js')(app);
 
 //Exportation de l'application
 module.exports = app;

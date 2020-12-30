@@ -105,7 +105,9 @@ exports.findAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    User.update({ descriptif: req.body.description, imageUrl: `${req.protocol}://${req.get('host')}/upload/profile/${req.file.filename}` },
+    User.update({ 
+        descriptif: req.body.description, 
+        imageUrl: `${req.protocol}://${req.get('host')}/upload/profile/${req.file.filename}` },
         { where: { id: UserID(req) } }
     ).then(() => {
         res.status(200).send("Mise à jour de l'utilisateur");

@@ -1,13 +1,17 @@
-<button mat-fab aria-label="Ajouter un utilisateur" (click)="onCreateUser()" color="accent">
+<button mat-fab aria-label="Ajouter une publication" (click)="onActionPost('create', '')" color="accent">
   <mat-icon>person_add</mat-icon>
 </button>
 
 <main *ngIf="tabPublications$ | async as objet">
   <mat-card *ngFor="let post of objet;">
     <mat-card-header>
-      <div mat-card-avatar>Icone User</div>
-      <mat-card-title>Prénom et Nom du user</mat-card-title>
-      <mat-card-subtitle>{{ post.createdAt }}</mat-card-subtitle>
+      <img mat-card-avatar src={{post.UserPublications.imageUrl}} alt="Alternate" />
+      <mat-card-title>{{post.UserPublications.firstname}} {{post.UserPublications.lastname}}</mat-card-title>
+      <mat-card-subtitle>{{ post.createdAt | date: 'EEEE d MMMM YYYY' }}</mat-card-subtitle>
+      <div *ngIf="post.actualUserOK">
+        <button (click)="onActionPost('modify', post.id)">Modifier</button>
+        <button (click)="delete(post.id)">Supprimer</button>
+      </div>
     </mat-card-header>
     <mat-divider></mat-divider>
     <img mat-card-image *ngIf="post.imagePost" src={{post.imagePost}} alt="Alternate Text" />
@@ -15,11 +19,11 @@
     <mat-card-content>
       <p *ngIf="post.textPost">{{ post.textPost }}</p>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button (click)="onDislike(post.id)">Likes {{ totalLike }}</button>
-      <button mat-button (click)="onLike(post.id)">Sad {{ post.sad }}</button>
-    </mat-card-actions>
-    <mat-card-footer>Commentaires</mat-card-footer>
+    <app-emotion [idPost]="post.id"></app-emotion>
+    <mat-divider></mat-divider>
+    <mat-card-footer>
+      <app-comment [idPost]="post.id"></app-comment>
+    </mat-card-footer>
   </mat-card>
 </main>
 

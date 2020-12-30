@@ -1,0 +1,42 @@
+<mat-dialog-content>
+  <header>
+    <div class="head">
+      <h1 mat-dialog-title>Ajouter un commentaire</h1>
+      <mat-dialog-actions>
+        <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </header>
+  <main>
+    <form [formGroup]="commentFormCreate" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Ecrivez votre commentaire ...</mat-label>
+        <textarea matInput formControlName="textComment"></textarea>
+      </mat-form-field>
+      <!--------ZONE SELECTION AUTOCOLLANTS-------------->
+      <mat-form-field>
+        <input matInput type="text" [placeholder]="textSearchStickers" (change)="change($event)" />
+      </mat-form-field>
+      <mat-dialog-actions (click)="searchSticker()"><mat-icon>search</mat-icon></mat-dialog-actions>
+      <!--------VISUALISATION STICKERS-------------->
+      <div *ngIf="responseStickerOK">
+        <div *ngIf="tabSticker$ | async as objet">
+          <img *ngFor="let valeur of objet;" [src]="valeur" (click)="selectStickerID(valeur)" />
+        </div>
+      </div>
+      <!--------VISUALISATION STICKER SELECTIONNE-------------->
+      <div *ngIf="selectStickerOK">
+        <img src="{{urlSTICKER}}" />
+      </div>
+      <div *ngIf="stickerModifyOK">
+        <img src="{{autocollantModify}}" />
+      </div>
+      <!--------->
+      <mat-dialog-actions>
+        <button mat-stroked-button color="primary" type="submit" [disabled]="commentFormCreate.invalid">Ajouter</button>
+      </mat-dialog-actions>
+    </form>
+  </main>
+</mat-dialog-content>

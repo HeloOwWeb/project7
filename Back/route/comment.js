@@ -1,0 +1,11 @@
+"use strict";
+
+module.exports = function (app) {
+    const comment = require('../controller/comment.js');
+    const auth = require('../middleware/auth.js');
+
+    app.post('/api/posts/comment/:id', auth, comment.createComment); //id post
+    app.put('/api/posts/comment/:id', auth, comment.modify); //id comment
+    app.get('/api/posts/comment/:id', auth, comment.getComment); //id post
+    app.get('/api/posts/comment/:id', auth, comment.getOneComment); //id comment
+}

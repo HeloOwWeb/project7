@@ -29,8 +29,12 @@ export class PublicationService {
     return this.httpClient.get<Publication[]>((this.url + 'current'));
   }
 
-  //Envoi du like/dislike ____________________________
-  sendLike(etatLike: any, id: number): Observable<any> {
-    return this.httpClient.post((this.url + id + '/like'), etatLike);
+  //Modification de la Publication
+  modifyPost(id: string, formData: any) : Observable<any>{
+    return this.httpClient.put((this.url + id), formData);
+  }
+
+  getOnePublication(id: string): Observable<any>{
+    return this.httpClient.get((this.url + id));
   }
 }

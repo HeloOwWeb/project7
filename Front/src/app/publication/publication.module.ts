@@ -14,9 +14,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { EmotionComponent } from './emotion/emotion.component';
+import { CommentComponent } from './comment/comment.component';
+import { EditCommentComponent } from './edit-comment/edit-comment.component';
 
 @NgModule({
-  declarations: [HomeComponent, EditPostComponent],
+  declarations: [HomeComponent, EditPostComponent, EmotionComponent, CommentComponent, EditCommentComponent],
   imports: [
     CommonModule,
     PublicationRoutingModule,

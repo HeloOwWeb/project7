@@ -1,0 +1,22 @@
+<h2>Commentaires</h2>
+<button mat-fab aria-label="Ajouter un commentaire" (click)="onActionPost('create', '')" color="accent">
+  <mat-icon>person_add</mat-icon>
+</button>
+<div *ngIf="tabComments$ | async as objet" >
+  <div *ngFor="let comment of objet;">
+    <img mat-card-avatar [src]="comment.UserComments.imageUrl" alt="Altenartive Text" />
+    <div>
+      <div>
+        <h3>{{comment.UserComments.firstname}} {{comment.UserComments.lastname}}</h3>
+        <p *ngIf="comment.autocollantComment">
+          <img [src]="comment.autocollantComment" alt="Alternative Text" />
+        </p>
+        <p>{{comment.textComment}}</p>
+      </div>
+      <div *ngIf="comment.actualUserOK">
+        <button (click)="onActionPost('modify', comment.id)" type="submit">Modifier</button>
+        <!-- <button (click)="actionComment('delete')" type="submit">Supprimer</button> -->
+      </div>
+    </div>
+  </div>
+</div>
