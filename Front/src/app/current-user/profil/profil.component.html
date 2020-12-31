@@ -8,7 +8,7 @@
   <div>
     <div>
       NOM : {{ lastname }} <br />
-      Prénom : {{ firstname }} 
+      Prénom : {{ firstname }}
     </div>
     <div>
       Description : {{ description }}
@@ -25,5 +25,5 @@
     <mat-divider></mat-divider>
     icone warning Attention (en rouge), cette action est définitive. Toutes vos publications et tous vos commentaires seront supprimés.
   </div>
-  <button>Supprimer définitivement mon compte</button>
+  <button (click)="deleteUser()">Supprimer définitivement mon compte</button>
 </main>

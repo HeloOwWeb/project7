@@ -5,7 +5,8 @@ import { GiphyService } from '../../services/giphy.service';
 import { Publication } from '../../models/Publication.model';
 import { PublicationService } from '../../services/publication.service';
 import { map, takeUntil } from 'rxjs/operators';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-edit-post',
@@ -41,7 +42,7 @@ export class EditPostComponent implements OnInit {
   textArea: string ='';
   textPresent: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private gifService: GiphyService, private publicationService: PublicationService,
+  constructor(public dialogRef: MatDialogRef<HomeComponent>, private formBuilder: FormBuilder, private gifService: GiphyService, private publicationService: PublicationService,
     @Inject(MAT_DIALOG_DATA) public dataAction: { action : string, idPost : string }) { }
 
   ngOnInit(): void {
@@ -154,10 +155,6 @@ export class EditPostComponent implements OnInit {
       this.data.append('textPost', this.textArea);
       this.data.append('gifPost', this.urlGIF);
 
-      console.log(this.data.getAll('textPost'));
-      console.log(this.data.getAll('gifPost'));
-      console.log(this.data.getAll('image'));
-
       //Envoi de la publication
       this.publicationService.create(this.data)
         .subscribe(
@@ -187,16 +184,13 @@ export class EditPostComponent implements OnInit {
       //----------------------------------------------------
       this.data.append('gifPost', this.urlGIF);
 
-      console.log(this.data.getAll('textPost'));
-      console.log(this.data.getAll('gifPost'));
-      console.log(this.data.getAll('image'));
-
       this.publicationService.modifyPost(this.dataAction.idPost, this.data)
       .subscribe( infos => {
         console.log(infos);
       })
       }
 
+      this.dialogRef.close();
   }
   //--------------------------------------------------------------------------FIN PUBLICATION
 }

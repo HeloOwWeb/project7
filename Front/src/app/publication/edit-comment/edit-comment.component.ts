@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CommentsService } from 'src/app/services/comments.service';
 import { GiphyService } from 'src/app/services/giphy.service';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CommentComponent } from '../comment/comment.component';
 
 @Component({
   selector: 'app-edit-comment',
@@ -31,8 +32,13 @@ export class EditCommentComponent implements OnInit {
   stickerModifyOK: boolean = false;
   textModify: string = '';
   textPresent: boolean = false;
+  modify: boolean = false;
+  // Variables
+  tabComments$!: Observable<any>;
+  reponseComment!: any;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(public dialogRef: MatDialogRef<CommentComponent>,
+    private formBuilder: FormBuilder,
     private giphyService : GiphyService,
     private commentService: CommentsService,
     @Inject(MAT_DIALOG_DATA) public dataAction: { action: string, idPublication : string, idComment: string}
@@ -91,7 +97,9 @@ export class EditCommentComponent implements OnInit {
   //______________________________________________________________________________
   //----------------------------------------------------MODIFICATION D'UN COMMENTAIRE
   affichageDesInfos(){
+    console.log(this.dataAction);
     if(this.dataAction.action === 'modify'){
+      this.modify = true;
       this.commentService.getOneComment(this.dataAction.idComment)
       .subscribe(info => {
         console.log(info);
@@ -129,7 +137,6 @@ export class EditCommentComponent implements OnInit {
             console.log(response);
             //this.message = true;
             //this.alertMessage();
-            //this.dialogRef.close();
           },
           error => {
             //this.message = false;
@@ -159,6 +166,7 @@ export class EditCommentComponent implements OnInit {
       this.commentService.modifyComment(idCommentaire, objetComment)
       .subscribe( info => { console.log(info); });
     }
+    this.dialogRef.close();
   }
   //--------------------------------------------------------------------------FIN COMMENTAIRE
 }

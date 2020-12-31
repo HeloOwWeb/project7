@@ -91,7 +91,7 @@ exports.modify = (req, res) => {
   Post.findOne({ where : { id : idPost }})
     .then((publication) => {
         if(publication.idUserPost != user) {
-          return res.status(401).send("Vous devez vous identifier.");
+          return res.status(401).send({message: "Vous devez vous identifier."});
         }
 
         //Supprimer l'image de ma publication si ce n'est pas null et mettre null gifPost
@@ -104,7 +104,7 @@ exports.modify = (req, res) => {
               if(error){
                 return console.log(error);
               }else{
-                return console.log("Image supprimée");
+                return console.log({ message : "Image supprimée" });
               }        
             })
           }
@@ -115,8 +115,42 @@ exports.modify = (req, res) => {
         }
       
     })
-  .then(() => {res.status(200).send("Mise à jour de la publication");})
+  .then(() => {res.status(200).send({message : "Mise à jour de la publication"});})
   .catch( error => res.status(400).json({ message : "La modification de la publication n'a pas été prise en compte." }, error));
+}
+
+//DELETE Supprimer la publication avec ses commentaires
+exports.delete = (req, res) => {
+  const idPost = req.params.id;
+  let publication;
+
+  Post.findOne({ where : { id : idPost }})
+  .then((post) => {
+    publication = post;
+    return Comment.destroy({ where : { postId : publication.id }})
+  })
+  .then(() => {
+    return Emotions.destroy({ where : { idPublication : publication.id }});
+  })
+  .then(() => {
+    if(publication.imagePost){
+      const filename = publication.imagePost.split('/upload/')[1];
+      fs.unlink(`./upload/${filename}`, (error) => {
+        if(error){
+          return console.log(error);
+        }else {
+          return console.log({ message : "Image supprimée"});
+        }
+      })
+    }
+    return Post.destroy({ where : { id : publication.id }});
+  })
+  .then(() => {
+    res.status(200).send( { message : "La publication est bien supprimée. "});
+  })
+  .catch( error => {
+    res.status(500).send(error);
+  })
 }
 
 //Récupérer toutes les publications

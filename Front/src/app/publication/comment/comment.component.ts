@@ -46,8 +46,8 @@ export class CommentComponent implements OnInit {
   onActionPost(action: string, idComment: string) {
     //Configuration de la fenetre modal
     const dialogConfig = new MatDialogConfig();
-    //Paramétrage fermeture - click en dehors accepte
-    dialogConfig.disableClose = false;
+    //Paramétrage fermeture - click en dehors non accepte
+    dialogConfig.disableClose = true;
     // Paramétrage ouvert
     //focus sur le premier champs
     dialogConfig.autoFocus = true;
@@ -58,6 +58,10 @@ export class CommentComponent implements OnInit {
     dialogConfig.data = { action: action, idPublication : this.idPost, idComment: idComment };
     //Insertion component dans popup
     this.dialog.open(EditCommentComponent, dialogConfig);
+//AFTER CLOSE
+    const dialogRef = this.dialog.open(EditCommentComponent, dialogConfig);
+    dialogRef.afterClosed()
+    .subscribe( () => { this.allComments(this.idPost); this.dialog.closeAll(); });
   }
 
   allComments(id: string){
@@ -72,5 +76,10 @@ export class CommentComponent implements OnInit {
         }
         return tab;
     }));
+  }
+
+  deleteComment(id: string){
+    this.commentService.deleteComment(id)
+    .subscribe( info => { this.allComments(this.idPost); });
   }
 }

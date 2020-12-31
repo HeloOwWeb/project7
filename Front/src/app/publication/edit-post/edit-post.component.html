@@ -1,7 +1,8 @@
 <mat-dialog-content>
   <header>
     <div class="head">
-      <h1 mat-dialog-title>Ajouter une publication</h1>
+      <h1 mat-dialog-title *ngIf="!modifyOK">Ajouter une publication</h1>
+      <h1 mat-dialog-title *ngIf="modifyOK">Modifier une publication</h1>
       <mat-dialog-actions>
         <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
           <mat-icon>close</mat-icon>

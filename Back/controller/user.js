@@ -2,9 +2,13 @@
 
 const db = require('../config/config.js');
 const User = db.user;
+const Comment = db.comment;
+const Emotions = db.emotions;
+const Post = db.post;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UserID = require('../middleware/getUserId.js');
+const fs = require('fs');
 
 function maskEmail(email) {
     // Fonction pour remplacer l'email avec '*' -> RGDP
@@ -85,6 +89,71 @@ exports.login = (req, res) => {
         }).catch(error => res.status(500).json({ error }));
 };
 
+//Modification du User
+exports.update = (req, res) => {
+    User.update({ 
+        descriptif: req.body.description, 
+        imageUrl: `${req.protocol}://${req.get('host')}/upload/profile/${req.file.filename}` },
+        { where: { id: UserID(req) } }
+    ).then(() => {
+        res.status(200).send("Mise à jour de l'utilisateur");
+    });
+};
+
+//DELETE : définitif
+exports.delete = (req, res) => {
+    const id = req.params.id;
+    const user = UserID(req);
+    let profilUser;
+    let publications;
+
+    User.findOne({ where : { id : id }})
+    .then(profile => {
+        if(profile.id != user) {
+            return res.status(401).send({message: "Vous devez vous identifier."});
+        }
+        
+        profilUser = profile;
+        return Comment.destroy({ where : { userId : profilUser.id }})
+    })
+    .then(() => {
+        return Emotions.destroy({ where : { idUser : profilUser.id }});
+    })
+    .then(() => {
+        return Post.findAll({ where: { idUserPost : profilUser.id }});        
+    })
+    .then((post) => { 
+        publications = post;
+        for(let i=0; i < publications.length; i++){
+            if(publications[i].imagePost){
+                const filename = publications[i].imagePost.split('/upload/')[1];
+                fs.unlink(`./upload/${filename}`, (error) => {
+                    if(error){
+                        return console.log(error);
+                    }else {
+                        return console.log({ message : "Image supprimée"});
+                    }
+                })
+            }
+            //Supprime également tous les commentaires liés à la publication
+            Comment.destroy({ where : { postId : publications[i].id }});
+            //Supprime également tous les commentaires liés à la publication
+            Emotions.destroy({ where : { idPublication : publications[i].id }});
+        }   
+        return Post.destroy({ where: { idUserPost : profilUser.id }}); 
+    })
+    .then(() => {
+        return User.destroy({ where : { id : profilUser.id }})
+    })
+    .then(() => {
+        res.status(200).send( { message : "Votre compte a été définitivement supprimé."});
+    })
+    .catch( error => {
+        res.status(500).send(error);
+    });
+};
+
+//GET user connecté
 exports.findCurrentUser = (req, res) => {
     User.findOne({
         where: { id: UserID(req) },
@@ -98,27 +167,10 @@ exports.findCurrentUser = (req, res) => {
     });
 };
 
+
+//
 exports.findAll = (req, res) => {
     User.findAll().then(users => {
         res.send(users);
-    });
-};
-
-exports.update = (req, res) => {
-    User.update({ 
-        descriptif: req.body.description, 
-        imageUrl: `${req.protocol}://${req.get('host')}/upload/profile/${req.file.filename}` },
-        { where: { id: UserID(req) } }
-    ).then(() => {
-        res.status(200).send("Mise à jour de l'utilisateur");
-    });
-};
-
-exports.delete = (req, res) => {
-    const id = req.params.userId;
-    User.destroy({
-        where: { id: id }
-    }).then(() => {
-        res.status(200).send('Supprimer User id = ' + id);
     });
 };

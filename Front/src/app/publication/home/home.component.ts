@@ -56,6 +56,10 @@ export class HomeComponent implements OnInit {
     dialogConfig.data = { action : actionButton, idPost : id };
     //Insertion component dans popup
     this.dialog.open(EditPostComponent, dialogConfig);
+//AFTER CLOSE
+    const dialogRef = this.dialog.open(EditPostComponent, dialogConfig);
+    dialogRef.afterClosed()
+    .subscribe( () => { this.allPost(); this.dialog.closeAll(); });
   }
 
   allPost() {
@@ -73,7 +77,11 @@ export class HomeComponent implements OnInit {
   }
 
   delete(id: string){
-    console.log(id);
+    this.publicationService.deletePost(id)
+    .subscribe((info) => {
+      console.log(info);
+      this.allPost();
+    })
   }
 }
 

@@ -24,14 +24,20 @@ export class PublicationService {
   getAllPosts(): Observable<any> {
     return this.httpClient.get(this.url);
   }
-  //Pour le Current Profile
-  getAllPostsCurrent() {
-    return this.httpClient.get<Publication[]>((this.url + 'current'));
-  }
 
   //Modification de la Publication
   modifyPost(id: string, formData: any) : Observable<any>{
     return this.httpClient.put((this.url + id), formData);
+  }
+
+  //Suppression de la Publication
+  deletePost(id: string): Observable<any>{
+    return this.httpClient.delete((this.url + id));
+  }
+
+  //Pour le Current Profile
+  getAllPostsCurrent() {
+    return this.httpClient.get<Publication[]>((this.url + 'current'));
   }
 
   getOnePublication(id: string): Observable<any>{

@@ -8,6 +8,7 @@ module.exports = function (app) {
 
     app.post('/api/posts/', auth, multer, posts.create);
     app.put('/api/posts/:id', auth, multer, posts.modify);
+    app.delete('/api/posts/:id', auth, multer, posts.delete);
     app.get('/api/posts/', auth, posts.findAll);
     app.get('/api/posts/current', auth, posts.findCurrent);   
     app.get('/api/posts/:id', auth, posts.findOnePost);

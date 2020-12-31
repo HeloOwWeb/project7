@@ -82,8 +82,8 @@ exports.modify = (req, res) => {
     
     Comment.findOne({ where : { id : idComment }})
         .then((commentaire) => {
-            if(commentaire.id != user) {
-                return res.status(401).send("Vous devez vous identifier.");
+            if(commentaire.userId != user) {
+                return res.status(401).send( { message: "Vous devez vous identifier." } );
             }
 
             //Présence ou non d'une valeur
@@ -101,10 +101,28 @@ exports.modify = (req, res) => {
 
             return commentaire.update({ autocollantComment : autocollantComment, textComment : textComment }) 
         })
-    .then(() => {res.status(200).send("Mise à jour du commentaire");})
+    .then(() => {res.status(200).send({ message: "Mise à jour du commentaire"});})
     .catch( error => res.status(400).json({ message : "La modification du commentaire n'a pas été prise en compte." }, error));
 }
 
+//DELETE Supprimer un commentaire
+exports.delete = (req, res) =>{
+    const id = req.params.id;
+    const user = UserID(req);
+
+    Comment.findOne({ where : { id : id }})
+    .then((comment) => { 
+        if (user != comment.userId){
+            return res.status(401).json({ message: 'Vous devez vous identifier !'});
+        }else{
+            return comment.destroy();
+        }
+    })
+    .then(() => res.status(200).json({ message: 'Commentaire supprimé !' }))
+    .catch(error => res.status(400).json({ error }));
+};
+
+//GET Récupérer l'ensemble des commentaires
 exports.getComment = (req, res) => {
     const idPost = req.params.id;
     const user = UserID(req);
@@ -145,6 +163,7 @@ exports.getComment = (req, res) => {
         });
 };
 
+//GET Récupérer un commentaire
 exports.getOneComment = (req, res) => {
     const id= req.params.id;
 
