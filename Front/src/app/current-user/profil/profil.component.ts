@@ -65,4 +65,7 @@ export class ProfilComponent implements OnInit {
     this.dialog.open(EditProfilComponent, dialogConfig);
   }
 
+  deleteUser(){
+    console.log("A FAIRE");
+  }
 }

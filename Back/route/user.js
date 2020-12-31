@@ -10,9 +10,9 @@ module.exports = function (app) {
     app.post('/api/auth/login', users.login);
     //Current User
     app.put('/api/users/modify', auth, multerProfile, users.update);
+    app.delete('/api/users/:id', auth, users.delete);
     app.get('/api/users/current', auth, users.findCurrentUser);
 
-
-    app.get('/api/users', auth, users.findAll);
-    app.delete('/api/users/:userId', users.delete);
+    //app.get('/api/users', auth, users.findAll);
+    
 }

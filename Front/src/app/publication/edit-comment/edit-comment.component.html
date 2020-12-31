@@ -1,7 +1,8 @@
 <mat-dialog-content>
   <header>
     <div class="head">
-      <h1 mat-dialog-title>Ajouter un commentaire</h1>
+      <h1 mat-dialog-title *ngIf="!modify">Ajouter un commentaire</h1>
+      <h1 mat-dialog-title *ngIf="modify">Modifier un commentaire</h1>
       <mat-dialog-actions>
         <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
           <mat-icon>close</mat-icon>
@@ -11,6 +12,9 @@
   </header>
   <main>
     <form [formGroup]="commentFormCreate" (ngSubmit)="onSubmit()">
+      <div *ngIf="textPresent">
+        Votre texte de commentaire : {{textModify}}
+      </div>
       <mat-form-field>
         <mat-label>Ecrivez votre commentaire ...</mat-label>
         <textarea matInput formControlName="textComment"></textarea>
@@ -31,11 +35,12 @@
         <img src="{{urlSTICKER}}" />
       </div>
       <div *ngIf="stickerModifyOK">
-        <img src="{{autocollantModify}}" />
+        <img src="{{urlSTICKER}}" />
       </div>
       <!--------->
       <mat-dialog-actions>
-        <button mat-stroked-button color="primary" type="submit" [disabled]="commentFormCreate.invalid">Ajouter</button>
+        <button *ngIf="!modify" mat-stroked-button color="primary" type="submit" [disabled]="commentFormCreate.invalid">Ajouter</button>
+        <button *ngIf="modify" mat-stroked-button color="primary" type="submit" [disabled]="commentFormCreate.invalid">Modifier</button>
       </mat-dialog-actions>
     </form>
   </main>

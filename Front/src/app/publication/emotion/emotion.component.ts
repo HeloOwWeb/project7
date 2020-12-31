@@ -32,7 +32,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -42,7 +42,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -52,7 +52,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -62,7 +62,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -72,7 +72,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -82,7 +82,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -92,7 +92,7 @@ export class EmotionComponent implements OnInit {
     }
     this.emotionService.sendEmotion(id, objEmotion)
     .subscribe(info => {
-      console.log(info);
+      this.getCountEmotion();
     });
   }
 
@@ -101,8 +101,8 @@ export class EmotionComponent implements OnInit {
       "isAngry" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      console.log(info);
+    .subscribe(() => {
+      this.getCountEmotion();
     });
   }
 

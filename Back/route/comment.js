@@ -6,6 +6,7 @@ module.exports = function (app) {
 
     app.post('/api/posts/comment/:id', auth, comment.createComment); //id post
     app.put('/api/posts/comment/:id', auth, comment.modify); //id comment
+    app.delete("/api/posts/comment/:id", auth, comment.delete); // id comment
     app.get('/api/posts/comment/:id', auth, comment.getComment); //id post
-    app.get('/api/posts/comment/:id', auth, comment.getOneComment); //id comment
+    app.get('/api/posts/commentOne/:id', auth, comment.getOneComment); //id comment
 }
