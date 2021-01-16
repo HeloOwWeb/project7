@@ -1,9 +1,10 @@
 "use strict";
 
+//Liens avec les tables
 const db = require("../config/config.js");
 const Comment = db.comment;
 const User = db.user;
-const Post = db.post;
+//Middleware : récupérer le userId
 const UserID = require("../middleware/getUserId.js");
 
 //__________________PAGINATION________________________________
@@ -27,9 +28,10 @@ const getPagination = (page, size) => {
 };
   //____________________________________________________________
 
+//Création du commentaire
 exports.createComment = (req, res) =>{
     //Si les deux éléments sont nuls alors Erreur 400
-    if( !req.body.autocollantComment && !req.body.textComment){
+    if( req.body.autocollantComment === '' && req.body.textComment === ''){
         return res.status(400).json({ message: "Vous devez remplir un élément pour créer un commentaire." });
     }
 
@@ -58,13 +60,8 @@ exports.createComment = (req, res) =>{
 
     //Création du commentaire
     Comment.create(comment)
-    .then((data) => {
-        res.send(data);
-    })
-    .catch((err) => {
-        res.status(500).send({
-        message: err.message
-        });
+    .then((data) => { res.status(201).send(data); })
+    .catch((err) => { res.status(500).send({ message: err.message });
     });
 };
 
@@ -83,7 +80,7 @@ exports.modify = (req, res) => {
     Comment.findOne({ where : { id : idComment }})
         .then((commentaire) => {
             if(commentaire.userId != user) {
-                return res.status(401).send( { message: "Vous devez vous identifier." } );
+                return res.status(403).send( { message: "Vous n'êtes pas le créateur du commentaire." } );
             }
 
             //Présence ou non d'une valeur
@@ -109,13 +106,24 @@ exports.modify = (req, res) => {
 exports.delete = (req, res) =>{
     const id = req.params.id;
     const user = UserID(req);
+    let ADMIN;
 
-    Comment.findOne({ where : { id : id }})
+    User.findOne({ where : { id : user}})
+    .then((datas) => { 
+        if( datas.isAdmin == 1){ 
+            ADMIN = true; 
+        } else {
+            ADMIN = false;
+        } 
+    })
+    .then(() => {
+        return Comment.findOne({ where : { id : id }});
+    })
     .then((comment) => { 
-        if (user != comment.userId){
-            return res.status(401).json({ message: 'Vous devez vous identifier !'});
-        }else{
+        if (comment.userId == user || ADMIN ){
             return comment.destroy();
+        }else{
+            return res.status(403).json({ message: "Vous n'êtes pas autorisé à supprimer ce commentaire."});
         }
     })
     .then(() => res.status(200).json({ message: 'Commentaire supprimé !' }))
@@ -126,32 +134,48 @@ exports.delete = (req, res) =>{
 exports.getComment = (req, res) => {
     const idPost = req.params.id;
     const user = UserID(req);
+    let ADMIN;
 
     //query => chercher dans la BDD
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
     const createdAt = req.query.createdAt;
 
-    Comment.findAndCountAll({
-        where: { postId : idPost }, createdAt,
-        limit,
-        offset,
-        order: [["createdAt", "DESC"]],
-        include: [
-            {
-                model : User,
-                as : "UserComments",
-                attributes : [ "firstname","lastname","imageUrl"] 
-            }
-        ]
+    User.findOne({ where : { id : user}})
+    .then((datas) => { 
+        if( datas.isAdmin == 1){ 
+            ADMIN = true; 
+        } else {
+            ADMIN = false;
+        } 
+    })
+    .then(() => {
+        return Comment.findAndCountAll({
+            where: { postId : idPost }, createdAt,
+            limit,
+            offset,
+            order: [["createdAt", "DESC"]],
+            include: [
+                {
+                    model : User,
+                    as : "UserComments",
+                    attributes : [ "firstname","lastname","imageUrl"] 
+                }
+            ]
+        });
     })
     .then((comments) => {
         const tabComments = comments.rows;
         for(let i = 0 ; i < tabComments.length ; i++){
-            if(user === tabComments[i].userId){
-                tabComments[i].actualUserOK = 1; 
-            } else {
+            if(user === tabComments[i].userId) {
+                tabComments[i].actualUserOK = 1;
+            }else {
                 tabComments[i].actualUserOK = 0;
+            }
+            if(ADMIN){
+                tabComments[i].permission = 1;
+            } else {
+                tabComments[i].permission = 0;
             }
         }
 
@@ -171,7 +195,7 @@ exports.getOneComment = (req, res) => {
     .then((comment) => {
         res.send(comment);
     })
-    .catch((error) => {
-        res.status(500).send({ message : error.message || "Erreur survenue "});
+    .catch(() => {
+        res.status(404).send({ message : "Le commentaire n'existe plus."});
     })
 };

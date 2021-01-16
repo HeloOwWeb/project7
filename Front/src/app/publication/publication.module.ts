@@ -14,9 +14,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatRippleModule} from '@angular/material/core';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { EmotionComponent } from './emotion/emotion.component';
 import { CommentComponent } from './comment/comment.component';
 import { EditCommentComponent } from './edit-comment/edit-comment.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [HomeComponent, EditPostComponent, EmotionComponent, CommentComponent, EditCommentComponent],
@@ -31,7 +35,11 @@ import { EditCommentComponent } from './edit-comment/edit-comment.component';
     MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    MatBadgeModule,
+    MatRippleModule,
+    MatSnackBarModule,
+    FontAwesomeModule
   ],
   exports: [
     HomeComponent

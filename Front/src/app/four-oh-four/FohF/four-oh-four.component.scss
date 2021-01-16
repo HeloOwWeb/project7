@@ -1,0 +1,29 @@
+@import "../../../sass/mixins";
+
+main{
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10% 0;
+  @include media-min("desktop-sm") {
+    padding: 2% 0;
+  }
+}
+
+img {
+  width: 100%;
+  margin-bottom: 10%;
+  @include media-min("desktop-sm") {
+    width: 35%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 2%;
+  }
+}
+
+button{
+  margin: 6%;
+}

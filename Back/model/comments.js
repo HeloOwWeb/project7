@@ -2,7 +2,6 @@
 
 module.exports = (sequelize, Sequelize) => {
     const Comment = sequelize.define('comment', {
-        //Jointures : idUser (firstname/lastname/icon) / idPost
         //__________________Contenu du comment
         userId: {
             type: Sequelize.INTEGER
@@ -10,7 +9,13 @@ module.exports = (sequelize, Sequelize) => {
         postId: {
             type: Sequelize.INTEGER
         },
+        //Champs d'exploitation si Current User
         actualUserOK: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: 0
+        },
+        //Champs d'exploitation si ADLIN
+        permission: {
             type: Sequelize.BOOLEAN,
             defaultValue: 0
         },

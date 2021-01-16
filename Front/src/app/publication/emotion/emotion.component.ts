@@ -1,13 +1,15 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EmotionsService } from 'src/app/services/emotions.service';
+import { faHandshake, faGrinStars, faThumbsUp, faGrinSquintTears, faSadTear, faGrinHearts, faAngry, faSmile, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-emotion',
   templateUrl: './emotion.component.html',
   styleUrls: ['./emotion.component.scss']
 })
-export class EmotionComponent implements OnInit {
+export class EmotionComponent implements OnInit, OnDestroy {
   //Parent id de la publication
   @Input() idPost!: number;
   //Variables compteurs Emotion
@@ -19,6 +21,18 @@ export class EmotionComponent implements OnInit {
   countHeart: number = 0;
   countLOL: number = 0;
   countWoah: number = 0;
+  //Icones
+  like: IconDefinition = faThumbsUp;
+  sadTear: IconDefinition = faSadTear;
+  love: IconDefinition = faGrinHearts;
+  angry: IconDefinition = faAngry;
+  smile: IconDefinition = faSmile;
+  lol: IconDefinition = faGrinSquintTears;
+  wow: IconDefinition = faGrinStars;
+  bravo: IconDefinition = faHandshake;
+
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private emotionService: EmotionsService) { }
 
@@ -31,8 +45,9 @@ export class EmotionComponent implements OnInit {
       "isLike" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -41,8 +56,9 @@ export class EmotionComponent implements OnInit {
       "isHeart" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -51,8 +67,9 @@ export class EmotionComponent implements OnInit {
       "isSmile" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -61,8 +78,9 @@ export class EmotionComponent implements OnInit {
       "isLOL" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -71,8 +89,9 @@ export class EmotionComponent implements OnInit {
       "isClap" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -81,8 +100,9 @@ export class EmotionComponent implements OnInit {
       "isWoah" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -91,8 +111,9 @@ export class EmotionComponent implements OnInit {
       "isSad" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(info => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(info => {
+        this.getCountEmotion();
     });
   }
 
@@ -101,13 +122,15 @@ export class EmotionComponent implements OnInit {
       "isAngry" : 1
     }
     this.emotionService.sendEmotion(id, objEmotion)
-    .subscribe(() => {
-      this.getCountEmotion();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.getCountEmotion();
     });
   }
 
   getCountEmotion(){
     this.emotionService.getEmotionsPublication(this.idPost)
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(datas => {
         this.countLike = datas.countLike;
         this.countClap = datas.countClap;
@@ -120,4 +143,8 @@ export class EmotionComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
+  }
 }

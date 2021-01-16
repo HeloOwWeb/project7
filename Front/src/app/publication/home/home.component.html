@@ -1,30 +1,52 @@
-<button mat-fab aria-label="Ajouter une publication" (click)="onActionPost('create', '')" color="accent">
-  <mat-icon>person_add</mat-icon>
+<button mat-fab aria-label="Ajouter une publication" (click)="onActionPost('create', '')" class="createPost">
+  <mat-icon>post_add</mat-icon>
 </button>
 
 <main *ngIf="tabPublications$ | async as objet">
-  <mat-card *ngFor="let post of objet;">
+  <mat-card *ngFor="let post of objet; trackByFunction">
+    <!-- HEADER -->
     <mat-card-header>
       <img mat-card-avatar src={{post.UserPublications.imageUrl}} alt="Alternate" />
       <mat-card-title>{{post.UserPublications.firstname}} {{post.UserPublications.lastname}}</mat-card-title>
       <mat-card-subtitle>{{ post.createdAt | date: 'EEEE d MMMM YYYY' }}</mat-card-subtitle>
-      <div *ngIf="post.actualUserOK">
-        <button (click)="onActionPost('modify', post.id)">Modifier</button>
-        <button (click)="delete(post.id)">Supprimer</button>
+      <div class="buttonHeaderContent">
+        <button mat-mini-fab *ngIf="post.actualUserOK" (click)="onActionPost('modify', post.id)"><mat-icon>edit</mat-icon></button>
+        <button mat-mini-fab *ngIf="post.actualUserOK || post.permission " (click)="delete(post.id)"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-header>
+    <!-- SEPARATION -->
     <mat-divider></mat-divider>
-    <img mat-card-image *ngIf="post.imagePost" src={{post.imagePost}} alt="Alternate Text" />
-    <img mat-card-image *ngIf="post.gifPost" src={{post.gifPost}} alt="Alternate Text" />
+    <!-- CONTENU TEXT -->
     <mat-card-content>
       <p *ngIf="post.textPost">{{ post.textPost }}</p>
     </mat-card-content>
-    <app-emotion [idPost]="post.id"></app-emotion>
+    <!-- CONTENU IMAGE GIF -->
+    <img mat-card-image *ngIf="post.imagePost" src={{post.imagePost}} alt="Alternate Text" />
+    <img mat-card-image *ngIf="post.gifPost" src={{post.gifPost}} alt="Alternate Text" />
+    <!-- SEPARATION -->
     <mat-divider></mat-divider>
+    <!-- EMOTIONS -->
+    <app-emotion [idPost]="post.id"></app-emotion>
+    <!-- SEPARATION -->
+    <mat-divider></mat-divider>
+    <!-- COMMENTAIRE -->
     <mat-card-footer>
       <app-comment [idPost]="post.id"></app-comment>
     </mat-card-footer>
   </mat-card>
+  <!-- PAGINATION -->
+  <div class="pagination">
+    <button mat-flat-button (click)="reloadPosts('previous')">
+      <mat-icon>undo</mat-icon>
+    </button>
+    <p class="noPost" *ngIf="!pagination"> Il n'y a plus de publication à afficher.</p>
+    <p class="countPage" *ngIf="pagination">
+      {{page}} / {{maxPages}}
+    </p>
+    <button mat-flat-button (click)="reloadPosts('next')">
+      <mat-icon>redo</mat-icon>
+    </button>
+  </div>
 </main>
 
-<p *ngIf="!isLoad">Nous avons rencontré un problème lors du chargement des publications. Nous nous excusons pour la gêne occasionnée et nous vous invitons à revenir ultérieurement.</p>
+<p *ngIf="!isLoad" class="problem">Nous avons rencontré un problème lors du chargement des publications. Nous nous excusons pour la gêne occasionnée et nous vous invitons à revenir ultérieurement.</p>

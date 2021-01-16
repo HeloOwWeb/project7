@@ -1,0 +1,58 @@
+@import "../../../sass/mixins";
+
+main{
+  width: 100%;
+  margin: 5% auto;
+}
+
+.mat-form-field{
+  width: 100%;
+  font-size: larger;
+  background-color: #ffffff98;
+  @include media-min("tablet-up") {
+    font-size: 5vmin;
+  }
+  @include media-min("desktop-sm") {
+    font-size: 3vmin;
+  }
+}
+
+.mat-icon{
+  color: #d05059;
+  @include media-min("tablet-up") {
+    font-size: 4vmin;
+  }
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  text-align: center;
+  @include media-min("tablet-up") {
+    font-size: 3.8vmin;
+  }
+}
+.mat-header-cell{
+  font-size: larger;
+  font-weight: bold;
+  color: #20324f;
+  @include media-min("tablet-up") {
+    font-size: 3.8vmin;
+  }
+  @include media-min("desktop-sm") {
+    font-size: 3vmin;
+  }
+}
+
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type,
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+  padding:0% 11% 0 6%;
+  @include media-min("tablet-up") {
+    font-size: 3.8vmin;
+    padding: 0% 20% 5% 15%;
+  }
+  @include media-min("desktop-sm") {
+    font-size: 3vmin;
+    padding: 0% 50% 5% 45%;
+  }
+}

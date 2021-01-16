@@ -1,29 +1,30 @@
+<!--------------------------en tete-->
+<header>
+  <img src="{{avatar}}" alt="Photo de profil de {{firstname}}" />
+  <h1><span>B</span>ienvenue sur votre profil {{ firstname }} !</h1>
+</header>
+
 <main>
-  <!--------------------------en tete-->
-  <div>
-    <img src="{{ avatar }}" alt="Alternate Text" />
-    <h1><span>B</span>ienvenue sur votre profil {{ firstname }} !</h1>
-  </div>
   <!--------------------------card-->
-  <div>
-    <div>
-      NOM : {{ lastname }} <br />
-      Prénom : {{ firstname }}
-    </div>
-    <div>
-      Description : {{ description }}
-    </div>
+  <section class="profil">
+    <div>NOM : {{ lastname }} <br />Prénom : {{ firstname }}</div>
+    <div>Description : {{ description }}</div>
+    <button mat-raised-button (click)="modifyInfo()">Modifier mes informations</button>
+  </section>
+    <mat-divider></mat-divider>
+  <div class="access" *ngIf="accessListingUsersButton">
+    <button mat-raised-button (click)="listUsers()">Voir la liste des utilisateurs</button>
   </div>
-  <button (click)="modifyInfo()">Mofifier mes informations</button>
-  <mat-divider></mat-divider>
-  <div>
-    <h2>Vos publications</h2>
+  <section class="post">
+    <h2>Visualisation de vos publications</h2>
     <mat-divider></mat-divider>
     <app-publication-current></app-publication-current>
-  </div>
-  <div>
-    <mat-divider></mat-divider>
-    icone warning Attention (en rouge), cette action est définitive. Toutes vos publications et tous vos commentaires seront supprimés.
-  </div>
-  <button (click)="deleteUser()">Supprimer définitivement mon compte</button>
+  </section>
 </main>
+
+<footer>
+  <p><mat-icon>warning</mat-icon>
+    Cette action est définitive. <br />Toutes vos publications et tous vos commentaires seront supprimés.
+  </p>
+  <button mat-raised-button (click)="deleteUser()">Supprimer définitivement mon compte</button>
+</footer>

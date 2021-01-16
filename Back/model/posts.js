@@ -2,10 +2,13 @@
 
 module.exports = (sequelize, Sequelize) => {
     const Post = sequelize.define('post', {
-        //User Active qui crée la publication 
-        //--lien vers la table user
-        // Récupére Firstname + Lastname et imageUrl
+        //Champs d'exploitation si Current User
         actualUserOK: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: 0
+        },
+        //Champs d'exploitation si ADMIN
+        permission: {
             type: Sequelize.BOOLEAN,
             defaultValue: 0
         },
@@ -14,58 +17,47 @@ module.exports = (sequelize, Sequelize) => {
         },
         //Publication
         imagePost: {
-            type: Sequelize.STRING, 
-            //allowNull: true
+            type: Sequelize.STRING
         },
         //GIF
         gifPost: {
             type: Sequelize.STRING
-            //allowNull: true
         },
         textPost: {
-            type: Sequelize.TEXT,
-            //allowNull: true
+            type: Sequelize.TEXT
         },
         //_________________________Compteurs Emotions
         countLike: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countClap: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countSad: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countSmile: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countAngry: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countHeart: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countLOL: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         },
         countWoah: {
             type: Sequelize.INTEGER,
             defaultValue: 0
-            //allowNull: true
         }
     });
     return Post;

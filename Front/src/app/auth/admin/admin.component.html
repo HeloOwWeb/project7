@@ -2,39 +2,55 @@
     <h1>S'inscrire</h1>
 
     <!-- NAME -->
-    <label for="lastname">Votre nom:</label>
-    <input type="text" id="lastname" formControlName="lastname" placeholder="OUPS">
+    <mat-form-field appearance="outline">
+      <mat-label>Votre nom</mat-label>
+      <input matInput type="text" formControlName="lastname" placeholder="OUPS" required />
+    </mat-form-field>
 
     <!-- SURNAME -->
-    <label for="firstname">Votre prénom:</label>
-    <input type="text" id="firstname" formControlName="firstname" placeholder="Samantha">
+    <mat-form-field appearance="outline">
+      <mat-label>Votre prénom:</mat-label>
+      <input matInput type="text" formControlName="firstname" placeholder="Samantha" required />
+    </mat-form-field>
 
     <!-- Email -->
-    <label for="email">Votre adresse e-mail :</label>
-    <input type="email" id="email" placeholder="contact@gmail.com" formControlName="email">
+    <mat-form-field appearance="outline">
+      <mat-label>Votre adresse e-mail</mat-label>
+      <input matInput type="email" placeholder="contact@gmail.com" formControlName="email" required />
+    </mat-form-field>
 
     <!-- Confirmation Email -->
-    <label for="confEmail">Confirmez votre adresse e-mail :</label>
-    <input type="email" id="confEmail" placeholder="contact@gmail.com" formControlName="confEmail">
+    <mat-form-field appearance="outline">
+      <mat-label>Confirmez votre adresse e-mail :</mat-label>
+      <input matInput type="email" placeholder="contact@gmail.com" formControlName="confEmail" required />
+    </mat-form-field>
 
     <!-- Password -->
-    <label for="password">Votre mot de passe :</label>
-    <input type="password" id="password" placeholder="Mot de passe" formControlName="password">
+    <mat-form-field appearance="outline">
+      <mat-label>Votre mot de passe</mat-label>
+      <input matInput type="password" placeholder="Mot de passe" formControlName="password" required />
+      <mat-hint>Minimum 6 caractères, une lettre majuscule et un chiffre.</mat-hint>
+    </mat-form-field>
 
     <!-- Confirmation Password -->
-    <label for="confPassword">Confirmez votre mot de passe :</label>
-    <input type="password" id="confPassword" placeholder="Mot de passe" formControlName="confPassword">
+    <mat-form-field appearance="outline">
+      <mat-label>Confirmez votre mot de passe</mat-label>
+      <input matInput type="password" placeholder="Mot de passe" formControlName="confPassword" required />
+    </mat-form-field>
 
     <!-- Confirmation Password -->
-    <label for="passwordAdmin">Mot de passe communiqué par votre référent :</label>
-    <input type="password" id="passwordAdmin" placeholder="Mot de passe" formControlName="passwordAdmin">
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe communiqué par votre référent</mat-label>
+      <input matInput type="password" placeholder="Mot de passe" formControlName="passwordAdmin" required />
+    </mat-form-field>
 
     <!-- Validation des Conditions -->
-      <input type="checkbox" id="validConditionsUser" formControlName="accordTermsOfUse">
-      <label for="validConditionsUser">J'accepte les <a href="#" target="_blank">conditions d'utilisation du réseau social</a></label>
+    <p>
+      <mat-checkbox formControlName="accordTermsOfUse" required>J'accepte les </mat-checkbox><a routerLink="/auth/CU" target="_blank">conditions d'utilisation du réseau social</a>.
+    </p>
 
     <!-- Sign in button -->
-    <button type="submit" [disabled]="adminFormSign.invalid">Valider</button><!--
-    <p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>-->
+    <button mat-stroked-button type="submit" [disabled]="adminFormSign.invalid">Valider</button>
+    <p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>
 
 </form>

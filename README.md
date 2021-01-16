@@ -1,17 +1,13 @@
-# project7
------------------------ Publication : pagination front next()
------------------------ Publications : rafraichir avec un getOnePost
------------------------ Publication : pipe francais (voir paramétrage en fr)
------------------------ Current User : Mise à jours des buttons
------------------
------------------
-DELETE FRONT USER : fonction suppression definitve
------------------
-ADMIN
------------------
-(guards)
-Optimiser le visuel + responsive
-BACK FRONT : sécurité (back/front/regex) + gestion des erreurs (back/front) + .status (back) 
-	+ reponses server (back) + désabonnement (front) + nettoyage code (ALL)
------------------
-Documentation accompagnant le MVP
+## Réseau social interne Groupomania
+
+Le projet a été généré avec Angular CLI version 11.0.3.
+Version de node.js : 14.15.3
+Base de données SQL
+
+ # Pré-requis
+Cloner le projet, puis :
+
+    - rendez-vous dans le dossier Back : npm install et lancer le server;
+    - rendez-vous dans le dossier Front: ng serve pour avoir accès au serveur de développement. 
+
+Rendez-vous sur http://localhost:4200/. 

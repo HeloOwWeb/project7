@@ -1,10 +1,9 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { CommentsService } from 'src/app/services/comments.service';
-import { GiphyService } from 'src/app/services/giphy.service';
 import { EditCommentComponent } from '../edit-comment/edit-comment.component';
 
 @Component({
@@ -12,7 +11,7 @@ import { EditCommentComponent } from '../edit-comment/edit-comment.component';
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss']
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit, OnDestroy {
   //Taille fenetre modal
   widthDialogu: string = "100%";
   heightDialogu: string = "75%";
@@ -21,6 +20,9 @@ export class CommentComponent implements OnInit {
   // Variables
   tabComments$!: Observable<any>;
   reponseComment!: any;
+
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private dialog: MatDialog,
@@ -38,8 +40,8 @@ export class CommentComponent implements OnInit {
       this.widthDialogu = "50%";
       this.heightDialogu = "60%";
     } else if (this.breakpointObserver.isMatched('(min-width: 1440px)')) {
-      this.widthDialogu = "30%";
-      this.heightDialogu = "65%";
+      this.widthDialogu = "35%";
+      this.heightDialogu = "75%";
     }
   }
 
@@ -66,9 +68,9 @@ export class CommentComponent implements OnInit {
 
   allComments(id: string){
     this.tabComments$ = this.commentService.getAllComments(id)
-    .pipe( map (
-      datas => {
-        console.log(datas);
+    .pipe(
+      takeUntil(this.ngUnsubscribe$),
+      map (datas => {
         const tab = [];
         this.reponseComment= datas.comments;
         for(let i=0; i<this.reponseComment.length ; i++){
@@ -80,6 +82,12 @@ export class CommentComponent implements OnInit {
 
   deleteComment(id: string){
     this.commentService.deleteComment(id)
-    .subscribe( info => { this.allComments(this.idPost); });
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe( info => { this.allComments(this.idPost); });
+  }
+
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
   }
 }

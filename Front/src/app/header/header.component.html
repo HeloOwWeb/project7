@@ -1,9 +1,14 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button aria-label="Menu" routerLink="/publication">
-    <mat-icon>widgets</mat-icon>
-  </button>
+<mat-toolbar [ngStyle]="{'background-color': getColor()}">
   <img src="../../assets/img/icon-left-font-monochrome-white.svg" alt="Groupomania en délire" routerLink="/auth" />
-  <button mat-icon-button routerLink="/profil-utilisateur" aria-label="Profil utilisateur">
-    <mat-icon>face</mat-icon>
-  </button>
+  <div *ngIf="isLog">
+    <button mat-icon-button aria-label="Menu" routerLink="/publication">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button routerLink="/profil-utilisateur" aria-label="Profil utilisateur">
+      <mat-icon>face</mat-icon>
+    </button>
+    <button mat-icon-button routerLink="/auth" aria-label="Se déconnecter" (click)="logOut()">
+      <mat-icon>login</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
