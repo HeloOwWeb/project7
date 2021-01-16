@@ -1,7 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { CommentsService } from 'src/app/services/comments.service';
 import { GiphyService } from 'src/app/services/giphy.service';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { CommentComponent } from '../comment/comment.component';
   templateUrl: './edit-comment.component.html',
   styleUrls: ['./edit-comment.component.scss']
 })
-export class EditCommentComponent implements OnInit {
+export class EditCommentComponent implements OnInit, OnDestroy {
   idPost!: string;
   //------------Formulaire
   commentFormCreate!: FormGroup;
@@ -36,6 +36,9 @@ export class EditCommentComponent implements OnInit {
   // Variables
   tabComments$!: Observable<any>;
   reponseComment!: any;
+
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(public dialogRef: MatDialogRef<CommentComponent>,
     private formBuilder: FormBuilder,
@@ -63,10 +66,10 @@ export class EditCommentComponent implements OnInit {
     //RECHERCHE ET RECUP Sticker
     this.tabSticker$ =
       this.giphyService.searchStickers(this.textSearchStickers)
-      .pipe(tap( dataB => { console.log(dataB); }))
       .pipe(
-        map(
-          info => {
+        takeUntil(this.ngUnsubscribe$),
+        tap( dataB => { console.log(dataB); }),
+        map(info => {
             const tab = [];
             console.log(info);
             this.reponseGiphy = info.data;
@@ -101,16 +104,16 @@ export class EditCommentComponent implements OnInit {
     if(this.dataAction.action === 'modify'){
       this.modify = true;
       this.commentService.getOneComment(this.dataAction.idComment)
-      .subscribe(info => {
-        console.log(info);
-        if(info.autocollantComment){
-          this.urlSTICKER = info.autocollantComment;
-          this.stickerModifyOK= true;
-        }
-        if (info.textComment){
-          this.textPresent = true;
-          this.textModify = info.textComment;
-        }
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(info => {
+          if(info.autocollantComment){
+            this.urlSTICKER = info.autocollantComment;
+            this.stickerModifyOK= true;
+          }
+          if (info.textComment){
+            this.textPresent = true;
+            this.textModify = info.textComment;
+          }
       });
     }
   }
@@ -129,9 +132,9 @@ export class EditCommentComponent implements OnInit {
         'autocollantComment' : this.urlSTICKER
       }
       this.idPost = this.dataAction.idPublication;
-      console.log(this.idPost);
       //Envoi du commentaire
       this.commentService.createComment(this.idPost, objetComment)
+        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           response => {
             console.log(response);
@@ -164,9 +167,15 @@ export class EditCommentComponent implements OnInit {
       };
 
       this.commentService.modifyComment(idCommentaire, objetComment)
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe( info => { console.log(info); });
     }
     this.dialogRef.close();
   }
   //--------------------------------------------------------------------------FIN COMMENTAIRE
+
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
+  }
 }

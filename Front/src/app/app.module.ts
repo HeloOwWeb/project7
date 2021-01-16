@@ -21,6 +21,12 @@ import { InterceptorService } from './services/interceptor.service';
 import { CommentsService } from './services/comments.service';
 import { EmotionsService } from './services/emotions.service';
 import { KeyService } from './services/key.service';
+//Langue: Français
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
+import { LOCALE_ID } from '@angular/core';
+import { GuardsService } from './services/guards.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +43,11 @@ import { KeyService } from './services/key.service';
     MatButtonModule,
   ],
   providers: [
+    GuardsService,
+    {
+      provide: LOCALE_ID,
+      useValue: "fr-FR"
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,

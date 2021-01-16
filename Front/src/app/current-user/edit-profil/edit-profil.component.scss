@@ -1,0 +1,94 @@
+@import "../../../sass/mixins";
+
+mat-dialog-content, .mat-dialog-content {
+  border-bottom: 1px solid #d05059;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include media-min("tablet-up") {
+    height: 100%;
+  }
+}
+
+header{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5%;
+  button{
+    @include media-min("tablet-up") {
+      width: 8vmin;
+      height: 8vmin;
+    }
+    .mat-icon{
+      @include media-min("tablet-up") {
+        font-size: 5vmin;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+div{
+  text-align: center;
+}
+
+img{
+  width: 100%;
+  @include media-min("tablet-up") {
+    width: 35%;
+  }
+}
+
+button {
+  background-color: #30425f;
+  color: #E1E1E1;
+  @include media-min("tablet-up") {
+    padding:2%;
+    font-size: 4vmin;
+  }
+}
+
+.mat-icon{
+  color: #d05059;
+  font-size: x-large;
+}
+
+h1{
+  color: #30425f;
+  font-size: larger;
+  font-weight: bold;
+  padding: 0;
+  margin: 5% auto 0% auto;
+  @include media-min("tablet-up") {
+    font-size: 5vmin;
+    margin-bottom: 2%;
+  }
+}
+
+.mat-mini-fab{
+  background-color: #E1E1E1;
+  border: 1px solid #30425f;
+}
+
+form{
+  .mat-form-field{
+    width: 100%;
+  }
+  .mat-dialog-actions{
+    margin-top: 5%;
+    button{
+      width: 100%;
+    }
+  }
+}
+
+input, .mat-form-field{
+  @include media-min("tablet-up") {
+    font-size: 3.5vmin;
+  }
+}

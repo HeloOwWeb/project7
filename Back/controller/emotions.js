@@ -1,12 +1,17 @@
 "use strict";
 
+//Utilisation de requête brute renvoie un tableau de datas et un objet metaD
 const { QueryTypes } = require("sequelize");
+//Liens de la config globale
 const { sequelize } = require("../config/config.js");
+//Liens avec les tables
 const db = require("../config/config.js");
 const Emotions = db.emotions;
 const Post = db.post;
+//Middleware : récupérer le userId
 const UserID = require("../middleware/getUserId.js");
 
+//Création et modification des émotions
 exports.emotionsPost = (req, res) => {
   //Création des constantes  idPublication, userId, objet venant du Front
   const idPublication = req.params.id;
@@ -24,13 +29,20 @@ exports.emotionsPost = (req, res) => {
     let totalLOLs;
     let totalWoahs;
     //___________________________
+    //retourne l'intégration de la requête dans la config
     return sequelize.query(
+        //Sélectionne la totalité des lignes de la colonne isLike
+        //As : nom de l'alias où le résultat sera stocké
+        //From : de la table
+        //Where : où l'id de la publication est égale à 
           "SELECT SUM(isLike) AS countLikes FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
           { model: Emotions }
         )
       .then((resultCountLike) => {
+        //Stock le resultat pour Like
         totalLikes = resultCountLike;
+        //Demande pour Clap
         return sequelize.query(
           "SELECT SUM(isClap) AS countClaps FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -38,7 +50,9 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountClap) => {
+        //Stock le resultat pour Clap
         totalClaps = resultCountClap;
+        //Demande pour Sad
         return sequelize.query(
           "SELECT SUM(isSad) AS countSads FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -46,7 +60,9 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountSad) => {
+        //Stock le resultat pour Sad
         totalSads = resultCountSad;
+        //Demande pour Smile
         return sequelize.query(
           "SELECT SUM(isSmile) AS countSmiles FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -54,7 +70,9 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountSmile) => {
+        //Stock le resultat pour Smile
         totalSmiles = resultCountSmile;
+        //Demande Angry
         return sequelize.query(
           "SELECT SUM(isAngry) AS countAngrys FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -62,7 +80,9 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountAngry) => {
+        //Stock le resultat pour Angry
         totalAngrys = resultCountAngry;
+        //Demande Love
         return sequelize.query(
           "SELECT SUM(isHeart) AS countHearts FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -70,7 +90,9 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountHeart) => {
+        //Stock le resultat pour Love
         totalHearts = resultCountHeart;
+        //Demande Lol
         return sequelize.query(
           "SELECT SUM(isLOL) AS countLOLs FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -78,7 +100,9 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountLOL) => {
+        //Stock le resultat pour Lol
         totalLOLs = resultCountLOL;
+        //Demande Woah
         return sequelize.query(
           "SELECT SUM(isWoah) AS countWoahs FROM emotions where idPublication = ?",
           { replacements: [idPublication], type: QueryTypes.SELECT },
@@ -86,10 +110,13 @@ exports.emotionsPost = (req, res) => {
         );
       })
       .then((resultCountWoah) => {
+        //Stock le resultat pour Woah
         totalWoahs = resultCountWoah;
+        //Récupère la ligne de publication concerné
         return db.post.findOne({ where: { id: idPublication } });
       })
       .then((publicationFind) => {
+        //Mise à jour des valeurs des compteurs Emotions 
         return publicationFind.update({
           countLike: Number(totalLikes[0].countLikes),
           countClap: Number(totalClaps[0].countClaps),
@@ -163,7 +190,7 @@ exports.emotionsPost = (req, res) => {
       .then(() => {
         res
           .status(201)
-          .json({ message: "Wouah ! Tu as partagé ton émotion ! " });
+          .json({ message: "Tu as partagé ton émotion. " });
       })
       .catch((err) => {
         res.status(500).send({
@@ -184,14 +211,10 @@ exports.emotionsPost = (req, res) => {
         ligneEmotion.destroy().then(() => { 
           updateCountEmotion()
           .then(() => {
-            res
-              .status(200)
-              .json({ message: "Emotion supprimé pour remplacement" });
+            res.status(201).json({ message: "Emotion supprimé pour remplacement" });
           })
           .catch((err) => {
-            res.status(500).send({
-              message:
-                err.message || "Il y a eu une erreur lors du partage de l'émotion."
+            res.status(500).send({message: err.message || "Il y a eu une erreur lors du partage de l'émotion."
             });
           });
         })
@@ -209,9 +232,9 @@ exports.emotionsPost = (req, res) => {
       creationLigneEmotion(idPublication, userId, objetEmotions);
     }
   })
-
 };
 
+//Affichage des émotions de la publication ciblée
 exports.emotionsCountPost = (req, res) => {
   const idPublication = req.params.id;
   Post.findOne({
@@ -228,9 +251,9 @@ exports.emotionsCountPost = (req, res) => {
     ],
   })
     .then((publication) => {
-      res.send(publication);
+      res.status(200).send(publication);
     })
-    .catch((error) => {
-      res.status(500).json({ message: error.message });
+    .catch(() => {
+      res.status(404).json({ message: "La publication n'existe plus." });
     });
 };

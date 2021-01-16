@@ -1,0 +1,46 @@
+@import "../../../sass/mixins";
+
+main {
+  width: 100%;
+  margin : 5% 0% 0% 0%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include media-min("desktop-sm") {
+    width: 50%;
+    margin: 1% auto;
+  }
+}
+
+div {
+  width: 90%;
+}
+
+.buttonAuth {
+  width: 100%;
+  padding: 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  width: 65%;
+  margin : 1%;
+  font-size: medium;
+  background-color: #30425f;
+  color: #E1E1E1;
+  transition-duration: 0.4s;
+  &:hover{
+    background-color : #E1E1E1;
+    color: #d05059;
+    border: 1px solid #d05059;
+  }
+  @include media-min("tablet-up") {
+    font-size: 4vmin;
+    margin : 2%;
+    padding: 1%;
+  }
+}
+

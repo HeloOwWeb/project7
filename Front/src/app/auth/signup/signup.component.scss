@@ -1,0 +1,49 @@
+@import "../../../sass/mixins";
+
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width : 95%;
+  margin: 5% auto;
+  background-color: rgba(255, 255, 255, 0.808);
+  border-radius: 2%;
+  border: 1px solid #30425f;
+}
+
+h1{
+  margin: 10% 0%;
+  font-size: xx-large;
+  color: #d05059;
+}
+
+button {
+  margin-bottom: 10%;
+  color: #d05059;
+  @include media-min("tablet-up") {
+    font-size: 4vmin;
+    width : 70%;
+    padding: 2%;
+  }
+}
+
+mat-form-field{
+  @include media-min("tablet-up") {
+    font-size: 3.5vmin;
+    width: 90%;
+  }
+}
+
+p {
+  margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include media-min("tablet-up") {
+    font-size: 3.5vmin;
+    line-height: 150%;
+  }
+}
+

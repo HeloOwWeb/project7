@@ -1,9 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Publication } from '../models/Publication.model';
-import { Pagination } from '../models/PaginationPosts.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +19,8 @@ export class PublicationService {
 
   //Récupère les publications ________________________
   // Pour le Home
-  getAllPosts(): Observable<any> {
-    return this.httpClient.get(this.url);
+  getAllPosts(currentPage: number): Observable<any> {
+    return this.httpClient.get((this.url + '?page=' + currentPage ));
   }
 
   //Modification de la Publication

@@ -1,10 +1,9 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Publication } from 'src/app/models/Publication.model';
-import { Pagination } from '../../models/PaginationPosts.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { PublicationService } from '../../services/publication.service';
 import { EditPostComponent } from '../edit-post/edit-post.component';
 
@@ -13,17 +12,28 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
+  message: string= '';
   //Taille fenetre modal
   widthDialogu: string = "100%";
-  heightDialogu: string = "75%";
+  heightDialogu: string = "70%";
 
   isLoad: boolean = false;
   tabPublications$!: Observable<any>;
   responsePublications: any;
+  //Informations Pagination API
+  currentPage: number = 0;
+  maxPages: number = 0;
+  pagination: boolean = false;
+  //Données Pagination Front
+  page: number = 1;
 
-  constructor(private dialog: MatDialog,
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private notification: MatSnackBar,
+    private dialog: MatDialog,
     public breakpointObserver: BreakpointObserver,
     private publicationService : PublicationService) { }
 
@@ -37,8 +47,8 @@ export class HomeComponent implements OnInit {
       this.widthDialogu = "50%";
       this.heightDialogu = "60%";
     } else if (this.breakpointObserver.isMatched('(min-width: 1440px)')) {
-      this.widthDialogu = "30%";
-      this.heightDialogu = "65%";
+      this.widthDialogu = "35%";
+      this.heightDialogu = "75%";
     }
   }
 
@@ -59,29 +69,65 @@ export class HomeComponent implements OnInit {
 //AFTER CLOSE
     const dialogRef = this.dialog.open(EditPostComponent, dialogConfig);
     dialogRef.afterClosed()
-    .subscribe( () => { this.allPost(); this.dialog.closeAll(); });
+    .subscribe( () => { this.currentPage = 0; this.allPost(); this.dialog.closeAll(); });
   }
 
   allPost() {
-    this.tabPublications$ = this.publicationService.getAllPosts()
-        .pipe( map (
-          datas => {
-            console.log(datas);
+    this.tabPublications$ = this.publicationService.getAllPosts(this.currentPage)
+        .pipe(
+          takeUntil(this.ngUnsubscribe$),
+          map ( datas => {
             const tab = [];
             this.responsePublications = datas.publications;
             for(let i=0; i <this.responsePublications.length; i++){
               tab.push(this.responsePublications[i]);
             }
+            this.currentPage = datas.currentPage;
+            this.maxPages = datas.totalPages;
+            this.page = this.currentPage +1;
+            this.isLoad = true;
+            if(tab.length == 0){
+              this.pagination = false;
+              // trouver une solution ici
+            } else {
+              this.pagination = true;
+            }
             return tab;
         }));
   }
 
+  reloadPosts(action : string){
+    if(action === 'next'){
+      if(this.currentPage < this.maxPages ){
+        this.currentPage ++;
+      } else {
+        this.currentPage = 0;
+      }
+    } else if (action === 'previous'){
+      if(this.currentPage > 0 ){
+        this.currentPage --;
+      } else if(this.currentPage === 0){
+        this.currentPage = this.maxPages;
+      }
+    }
+    this.allPost();
+  }
+
   delete(id: string){
     this.publicationService.deletePost(id)
+    .pipe(takeUntil(this.ngUnsubscribe$))
     .subscribe((info) => {
-      console.log(info);
+      this.message = info.toString();
+            this.notification.open(this.message, undefined, {
+              duration: 4 * 1000
+            });
       this.allPost();
     })
+  }
+
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
   }
 }
 

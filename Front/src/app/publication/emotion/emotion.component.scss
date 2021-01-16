@@ -1,0 +1,39 @@
+@import "../../../sass/mixins";
+
+.mat-card-actions{
+  width: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include media-min("tablet-up") {
+    margin-bottom: 2%;
+  }
+}
+
+div{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+button {
+  margin-top : 5%;
+  padding: 0;
+  font-size: x-large;
+  color: #30425f;
+  &:active, :hover{
+    color: #d05059;
+  }
+  @include media-min("tablet-up") {
+    font-size: 5vmin;
+    margin-top: 10%;
+  }
+}
+
+.mat-badge-content{
+  background: #30425f;
+}

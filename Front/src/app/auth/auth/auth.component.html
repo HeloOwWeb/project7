@@ -1,13 +1,17 @@
-<button (click)="authLog()">Login</button>
-<button (click)="authSign()">Sign Up</button>
-<button (click)="authAdmin()">Admin</button>
+<main>
+  <div class="buttonAuth">
+    <button mat-raised-button (click)="authLog()">Se connecter</button>
+    <button mat-raised-button (click)="authSign()">S'inscrire</button>
+    <button mat-raised-button (click)="authAdmin()">Accès réservé</button>
+  </div>
 
-<div *ngIf="login">
-  <app-login></app-login>
-</div>
-<div *ngIf="signup">
-  <app-signup></app-signup>
-</div>
-<div *ngIf="admin">
-  <app-admin></app-admin>
-</div>
+  <div *ngIf="login">
+    <app-login></app-login>
+  </div>
+  <div *ngIf="signup">
+    <app-signup></app-signup>
+  </div>
+  <div *ngIf="admin">
+    <app-admin></app-admin>
+  </div>
+</main>

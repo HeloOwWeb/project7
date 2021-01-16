@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
+import { ProfilComponent } from '../profil/profil.component';
 
 @Component({
   selector: 'app-edit-profil',
   templateUrl: './edit-profil.component.html',
   styleUrls: ['./edit-profil.component.scss']
 })
-export class EditProfilComponent implements OnInit {
+export class EditProfilComponent implements OnInit, OnDestroy {
 
   //-----------------Formulaire
   putInfo!: FormGroup;
@@ -18,7 +22,10 @@ export class EditProfilComponent implements OnInit {
   file!: File;
   filePreview!: string;
 
-  constructor(private formBuilder: FormBuilder, private UserService: UserService) { }
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(public dialogRef: MatDialogRef<ProfilComponent>, private formBuilder: FormBuilder, private UserService: UserService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -36,7 +43,6 @@ export class EditProfilComponent implements OnInit {
     reader.readAsDataURL(this.file);
     //Ajout de l'image dans le formData
     this.data.append('image', this.file);
-    console.log(this.data.getAll('image'));
   }
   //--------------------------------------------------------------------------FORMULAIRE
   initForm(){
@@ -51,13 +57,18 @@ export class EditProfilComponent implements OnInit {
     const text = formValue['description'];
     //Ajout de la description dans le formData
     this.data.append('description', text);
-    console.log(this.data.getAll('description'));
     //Envoi de la modification Infos Current User
     this.UserService.modifyInfoCurrentUser(this.data)
-    .subscribe(
-      response => {
-        console.log(response);
-        //this.dialogRef.close();
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
+        response => {
+          console.log(response);
+          this.dialogRef.close();
       });
+  }
+
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
   }
 }

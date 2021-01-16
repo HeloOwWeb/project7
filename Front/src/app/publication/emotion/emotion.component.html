@@ -1,10 +1,36 @@
 <mat-card-actions>
-  <button mat-button (click)="onLike(idPost)">Like {{ countLike }}</button>
-  <button mat-button (click)="onHeart(idPost)">Love{{ countHeart }}</button>
-  <button mat-button (click)="onSmile(idPost)">Happy {{ countSmile }}</button>
-  <button mat-button (click)="onLOL(idPost)">LOL {{ countLOL }}</button>
-  <button mat-button (click)="onClap(idPost)">Bravo {{ countClap }}</button>
-  <button mat-button (click)="onWoah(idPost)">Woah ! {{ countWoah }}</button>
-  <button mat-button (click)="onSad(idPost)">Triste {{ countSad }}</button>
-  <button mat-button (click)="onAngry(idPost)">Colère {{ countAngry }}</button>
+  <div>
+    <button mat-icon-button (click)="onLike(idPost)" matRipple matBadge="{{ countLike }}">
+      <fa-icon [icon]="like"></fa-icon>
+    </button>
+
+    <button mat-icon-button (click)="onHeart(idPost)" matBadge="{{ countHeart }}">
+      <fa-icon [icon]="love"></fa-icon>
+    </button>
+
+    <button mat-icon-button (click)="onSmile(idPost)" matBadge="{{ countSmile }}">
+      <fa-icon [icon]="smile"></fa-icon>
+    </button>
+
+    <button mat-icon-button (click)="onLOL(idPost)" matRipple matBadge="{{ countLOL }}">
+      <fa-icon [icon]="lol"></fa-icon>
+    </button>
+  </div>
+  <div>
+    <button mat-icon-button (click)="onClap(idPost)" matBadge="{{ countClap }}">
+      <fa-icon [icon]="bravo"></fa-icon>
+    </button>
+
+    <button mat-icon-button (click)="onWoah(idPost)" matRipple matBadge="{{ countWoah }}">
+      <fa-icon [icon]="wow"></fa-icon>
+    </button>
+
+    <button mat-icon-button (click)="onSad(idPost)" matBadge="{{ countSad }}">
+      <fa-icon [icon]="sadTear"></fa-icon>
+    </button>
+
+    <button mat-icon-button (click)="onAngry(idPost)" matBadge="{{ countAngry }}">
+      <fa-icon [icon]="angry"></fa-icon>
+    </button>
+  </div>
 </mat-card-actions>

@@ -1,12 +1,12 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { GiphyService } from '../../services/giphy.service';
-import { Publication } from '../../models/Publication.model';
 import { PublicationService } from '../../services/publication.service';
 import { map, takeUntil } from 'rxjs/operators';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { HomeComponent } from '../home/home.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-post',
@@ -14,10 +14,11 @@ import { HomeComponent } from '../home/home.component';
   styleUrls: ['./edit-post.component.scss']
 })
 
-export class EditPostComponent implements OnInit {
+export class EditPostComponent implements OnInit, OnDestroy {
   //------------Formulaire
   publicationFormCreate!: FormGroup;
   errorMsg!: string;
+  message: string= '';
   data = new FormData();
   //------------UPLOAD
   loadingUpload: boolean = false;
@@ -42,7 +43,10 @@ export class EditPostComponent implements OnInit {
   textArea: string ='';
   textPresent: boolean = false;
 
-  constructor(public dialogRef: MatDialogRef<HomeComponent>, private formBuilder: FormBuilder, private gifService: GiphyService, private publicationService: PublicationService,
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private notification: MatSnackBar, public dialogRef: MatDialogRef<HomeComponent>, private formBuilder: FormBuilder, private gifService: GiphyService, private publicationService: PublicationService,
     @Inject(MAT_DIALOG_DATA) public dataAction: { action : string, idPost : string }) { }
 
   ngOnInit(): void {
@@ -70,8 +74,8 @@ export class EditPostComponent implements OnInit {
     this.tabGif$ =
       this.gifService.searchGiphy(this.textSearchGif)
       .pipe(
-        map(
-          info => {
+        takeUntil(this.ngUnsubscribe$),
+        map(info => {
             const tab = [];
             this.reponseGiphy = info.data;
             for (let i = 0; i < this.reponseGiphy.length; i++) {
@@ -124,21 +128,21 @@ export class EditPostComponent implements OnInit {
   affichageDesInfos(){
     if(this.dataAction.action === 'modify'){
       this.publicationService.getOnePublication(this.dataAction.idPost)
-      .subscribe(info => {
-        console.log(info);
-        this.modifyOK = true;
-        if(info.imagePost){
-          this.imageOK = true;
-          this.urlImage = info.imagePost;
-        }
-        if (info.gifPost){
-          this.selectGifOK = true;
-          this.urlGIF = info.gifPost;
-        }
-        if (info.textPost){
-          this.textPresent = true;
-          this.textArea = info.textPost;
-        }
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(info => {
+          this.modifyOK = true;
+          if(info.imagePost){
+            this.imageOK = true;
+            this.urlImage = info.imagePost;
+          }
+          if (info.gifPost){
+            this.selectGifOK = true;
+            this.urlGIF = info.gifPost;
+          }
+          if (info.textPost){
+            this.textPresent = true;
+            this.textArea = info.textPost;
+          }
       });
     }
   }
@@ -157,16 +161,19 @@ export class EditPostComponent implements OnInit {
 
       //Envoi de la publication
       this.publicationService.create(this.data)
+        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           response => {
-            console.log(response);
-            //this.message = true;
-            //this.alertMessage();
-            //this.dialogRef.close();
+            this.message = response.toString();
+            this.notification.open(this.message, undefined, {
+              duration: 4 * 1000
+            });
           },
           error => {
-            //this.message = false;
-            console.log("Une erreur est survenue: " + error.message);
+            this.message = error.error.toString();
+            this.notification.open(this.message, undefined, {
+              duration: 4 * 1000
+            });
           });
     }
 
@@ -185,12 +192,26 @@ export class EditPostComponent implements OnInit {
       this.data.append('gifPost', this.urlGIF);
 
       this.publicationService.modifyPost(this.dataAction.idPost, this.data)
-      .subscribe( infos => {
-        console.log(infos);
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe( infos => {
+          this.message = infos.toString();
+            this.notification.open(this.message, undefined, {
+              duration: 4 * 1000
+            });
+      }, error => {
+        this.message = error.error.toString();
+            this.notification.open(this.message, undefined, {
+              duration: 4 * 1000
+            });
       })
       }
 
       this.dialogRef.close();
   }
   //--------------------------------------------------------------------------FIN PUBLICATION
+
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
+  }
 }

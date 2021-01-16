@@ -1,11 +1,9 @@
 <mat-dialog-content>
   <header>
     <h1 mat-dialog-title>Modifier ses informations</h1>
-    <mat-dialog-actions>
-      <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-dialog-actions>
+    <button mat-mini-fab mat-dialog-close aria-label="Quitter" color="accent">
+      <mat-icon>close</mat-icon>
+    </button>
   </header>
   <form [formGroup]="putInfo" (ngSubmit)="onSubmit()">
     <!-----ZONE DESCRIPTION---->
@@ -16,10 +14,10 @@
     <!-----ZONE IMAGE DE PROFIL---->
     <input type="file" (change)="fileSelect($event)" />
     <!-----VISUALISATION IMAGE DE PROFIL---->
-    <img [src]="filePreview" alt="Votre nouvelle photo de profil" />
+    <img *ngIf="filePreview" [src]="filePreview" alt="Votre nouvelle photo de profil" />
     <!-----VALIDATION DU FORM---->
     <mat-dialog-actions>
-      <button mat-stroked-button color="primary" type="submit" [disabled]="putInfo.invalid">Valider les modifications</button>
+      <button mat-stroked-button type="submit" [disabled]="putInfo.invalid">Valider les modifications</button>
     </mat-dialog-actions>
   </form>
 </mat-dialog-content>

@@ -1,0 +1,40 @@
+@import "../../../sass/mixins";
+
+main{
+  width: 90%;
+  margin: 5% auto;
+}
+
+h1{
+  font-size: x-large;
+  text-align: center;
+  font-weight: bold;
+  @include media-min("tablet-up") {
+    font-size: 5vmin;
+    line-height: 150%;
+  }
+}
+
+article{
+  margin: 5% auto 0% auto;
+  padding-bottom: 5%;
+  h2{
+    font-size: large;
+    font-weight: bold;
+    border-bottom: 1px solid #d05059;
+    @include media-min("tablet-up") {
+      font-size: 4vmin;
+    }
+  }
+  div{
+    background-color: #ffffff75;
+    padding: 5%;
+    font-size: medium;
+    text-indent: 10%;
+    border-radius: 3%;
+    @include media-min("tablet-up") {
+      font-size: 3vmin;
+      line-height: 130%;
+    }
+  }
+}

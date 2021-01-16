@@ -1,5 +1,5 @@
 <main *ngIf="tabPublications$ | async as objet">
-  <mat-card *ngFor="let post of objet;">
+  <mat-card *ngFor="let post of objet; trackByFunction">
     <mat-card-header>
       <img mat-card-avatar src={{post.UserPublications.imageUrl}} alt="Alternate" />
       <mat-card-title>{{post.UserPublications.firstname}} {{post.UserPublications.lastname}}</mat-card-title>
@@ -11,35 +11,40 @@
     <mat-card-content>
       <p *ngIf="post.textPost">{{ post.textPost }}</p>
     </mat-card-content>
-    <mat-card-actions>
-      Like {{post.countLike}}
-      Love{{post.countHeart}}
-      Happy {{post.countSmile}}
-      LOL {{post.countLOL}}
-      Bravo {{post.countClap}}
-      Woah ! {{post.countWoah}}
-      Triste {{post.countSad}}
-      Colère {{post.countAngry}}
+    <mat-card-actions class="emotions">
+      <div>
+        <fa-icon [icon]="like" matBadge="{{post.countLike}}"></fa-icon>
+        <fa-icon [icon]="love" matBadge="{{post.countHeart}}"></fa-icon>
+        <fa-icon [icon]="smile" matBadge="{{post.countSmile}}"></fa-icon>
+        <fa-icon [icon]="lol" matBadge="{{post.countLOL}}"></fa-icon>
+      </div>
+      <div>
+        <fa-icon [icon]="bravo" matBadge="{{post.countClap}}"></fa-icon>
+        <fa-icon [icon]="wow" matBadge="{{post.countWoah}}"></fa-icon>
+        <fa-icon [icon]="sadTear" matBadge="{{post.countSad}}"></fa-icon>
+        <fa-icon [icon]="angry" matBadge="{{post.countAngry}}"></fa-icon>
+      </div>
     </mat-card-actions>
+
     <mat-card-footer>
       <h2>Commentaires</h2>
-<!--       <button mat-fab aria-label="Ajouter un utilisateur" (click)="onCreateComment()" color="accent">
-        <mat-icon>person_add</mat-icon>
-      </button>-->
-        <div *ngFor="let comment of post.PublicationComments">
-          <img mat-card-avatar [src]="comment.UserComments.imageUrl" alt="Altenartive Text" />
-          <div>
-            <div>
-              <h3>{{comment.UserComments.firstname}} {{comment.UserComments.lastname}}</h3>
-              <p *ngIf="comment.autocollantComment">
-                <img [src]="comment.autocollantComment" alt="Alternative Text" />
-              </p>
-              <p>{{comment.textComment}}</p>
-            </div>
-          </div>
-        </div>
+        <mat-card *ngFor="let comment of post.PublicationComments; trackByFunction">
+          <!-- HEADER COMMENT-->
+          <mat-card-header>
+            <img mat-card-avatar [src]="comment.UserComments.imageUrl" alt="Photo de profil de {{comment.UserComments.firstname}}" />
+            <mat-card-title>{{comment.UserComments.firstname}} {{comment.UserComments.lastname}}</mat-card-title>
+          </mat-card-header>
+          <!-- SEPARATION -->
+          <mat-divider></mat-divider>
+          <!-- CONTENU COMMENTAIRE-->
+          <mat-card-content>
+            <p *ngIf="comment.autocollantComment">
+              {{comment.textComment}} <img [src]="comment.autocollantComment" alt="Sticker" />
+            </p>
+          </mat-card-content>
+        </mat-card>
     </mat-card-footer>
   </mat-card>
+  <p class="message" *ngIf="empty">Aucune publication pour le moment.</p>
+  <p class="message" *ngIf="!isLoad">Nous avons rencontré un problème lors du chargement des publications. Nous nous excusons pour la gêne occasionnée et nous vous invitons à revenir ultérieurement.</p>
 </main>
-
-<p>Nous avons rencontré un problème lors du chargement des publications. Nous nous excusons pour la gêne occasionnée et nous vous invitons à revenir ultérieurement.</p>

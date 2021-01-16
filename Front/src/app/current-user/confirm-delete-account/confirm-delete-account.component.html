@@ -1,0 +1,27 @@
+<mat-dialog-content>
+  <button mat-mini-fab matDialogClose aria-label="Quitter">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <form [formGroup]="confirmDelete" (ngSubmit)="onSubmit()">
+    <div>
+      <h1>
+        La suppression du compte est définitive.
+      </h1>
+      <mat-icon>warning</mat-icon>
+      <p>
+        Afin de confirmer votre demande, merci de saisir votre prénom et votre nom dans l'encart, ci-après, puis de cliquer sur Confirmer.
+      </p>
+    </div>
+    <mat-form-field>
+      <mat-label>PrénomNOM</mat-label>
+      <input matInput type="text" formControlName="sentence" />
+      <mat-hint *ngIf="messageError">Merci de respecter le format comme suit : PrénomNOM. Par exemple : GeorgesSAND</mat-hint>
+    </mat-form-field>
+    <mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!confirmDelete.valid">
+        Supprimer mon compte
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

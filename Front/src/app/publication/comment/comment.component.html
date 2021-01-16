@@ -1,22 +1,31 @@
-<h2>Commentaires</h2>
-<button mat-fab aria-label="Ajouter un commentaire" (click)="onActionPost('create', '')" color="accent">
-  <mat-icon>person_add</mat-icon>
-</button>
+<div class="comment">
+  <h2>Commentaires</h2>
+  <button mat-mini-fab aria-label="Ajouter un commentaire" (click)="onActionPost('create', '')" color="accent">
+  <mat-icon>add_comment</mat-icon>
+  </button>
+</div>
+
 <div *ngIf="tabComments$ | async as objet" >
-  <div *ngFor="let comment of objet;">
-    <img mat-card-avatar [src]="comment.UserComments.imageUrl" alt="Altenartive Text" />
-    <div>
-      <div>
-        <h3>{{comment.UserComments.firstname}} {{comment.UserComments.lastname}}</h3>
-        <p *ngIf="comment.autocollantComment">
-          <img [src]="comment.autocollantComment" alt="Alternative Text" />
-        </p>
-        <p>{{comment.textComment}}</p>
-      </div>
-      <div *ngIf="comment.actualUserOK">
-        <button (click)="onActionPost('modify', comment.id)" type="submit">Modifier</button>
-        <button (click)="deleteComment(comment.id)" type="submit">Supprimer</button>
-      </div>
+  <mat-card *ngFor="let comment of objet; trackByFunction">
+    <!-- HEADER -->
+    <mat-card-header>
+      <img matCardAvatar [src]="comment.UserComments.imageUrl" alt="Image de profil de {{comment.UserComments.firstname}}" />
+      <mat-card-title>{{comment.UserComments.firstname}} {{comment.UserComments.lastname}}</mat-card-title>
+    </mat-card-header>
+    <!-- SEPARATION -->
+    <mat-divider></mat-divider>
+    <!-- CONTENU COMMENTAIRE-->
+    <mat-card-content>
+      <p>
+        {{comment.textComment}} <img *ngIf="comment.autocollantComment" [src]="comment.autocollantComment" alt="Sticker" />
+      </p>
+    </mat-card-content>
+    <!-- SEPARATION -->
+    <mat-divider></mat-divider>
+    <!-- Boutons action -->
+    <div class="buttonComment">
+      <button mat-button *ngIf="comment.actualUserOK" (click)="onActionPost('modify', comment.id)" type="submit">Modifier</button>
+      <button mat-button *ngIf="comment.actualUserOK || comment.permission" (click)="deleteComment(comment.id)" type="submit">Supprimer</button>
     </div>
-  </div>
+  </mat-card>
 </div>

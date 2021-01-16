@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { User } from '../../models/User.model';
 import { UserService } from '../../services/user.service';
 
@@ -9,13 +12,18 @@ import { UserService } from '../../services/user.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
 
   userFormSign!: FormGroup;
   errorMsg!: string;
+  message: string= '';
   authStatus!: boolean;
 
-  constructor(private formBuilder: FormBuilder,
+  //Désabonnement
+  private ngUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private notification: MatSnackBar,
+    private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router) { }
 
@@ -25,12 +33,12 @@ export class SignupComponent implements OnInit {
 
   initForm() {
     this.userFormSign = this.formBuilder.group({
-      lastname: ['', Validators.required],
-      firstname: ['', Validators.required],
+      lastname: ['', [Validators.required, Validators.pattern('^([A-Z{1}])?[a-zéèçà]{2,25}(-| )?([A-Z{1}])?([a-zéèçà]{2,25})?$')]],
+      firstname: ['', [Validators.required, Validators.pattern('^([A-Z{1}])?[a-zéèçà]{2,25}(-| )?([A-Z{1}])?([a-zéèçà]{2,25})?$')]],
       email: ['', [Validators.required, Validators.email]],
       confEmail: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confPassword: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).{6,45}')]],
+      confPassword: ['', [Validators.required, Validators.minLength(6), Validators.pattern('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).{6,45}')]],
       accordTermsOfUse: [false, Validators.requiredTrue]
     });
   }
@@ -52,10 +60,26 @@ export class SignupComponent implements OnInit {
 
     if (email1 === email2 && password1 === password2) {
       this.userService.signupUser(objectUser)
-        .subscribe(response => {
-          console.log(response);
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe((response) => {
+          this.message = response.toString();
+            this.notification.open(this.message, undefined, {
+              duration: 4 * 1000
+            });
+          this.router.navigate(['/publication']);
+        }, error => {
+          this.errorMsg = error.message;
         }
       )
+    } else if (email1 != email2) {
+      this.errorMsg = "Il y a une différence entre les deux champs email. Merci de corriger votre saisie avant validation."
+    } else if (password1 != password2) {
+      this.errorMsg = "Il y a une différence entre les deux champs mot de passe. Merci de resaisir votre mot de passe."
     }
+  }
+
+  ngOnDestroy(): void{
+    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.complete();
   }
 }

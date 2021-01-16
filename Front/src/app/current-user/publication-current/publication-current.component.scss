@@ -1,0 +1,202 @@
+@import "../../../sass/mixins";
+
+//-----------PUBLICATIONS
+.mat-card {
+  width: 80%;
+  margin: 5% auto;
+  border: 1px solid #d05059;
+  border-radius: 2%;
+  @include media-min("tablet-up") {
+    width: 60%;
+  }
+  @include media-min("desktop-sm") {
+    width: 40%;
+    margin: 1% auto;
+  }
+}
+
+//HEADER card Post
+.mat-card-header{
+  width: 100%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  @include media-min("tablet-up") {
+    margin-bottom: 0%;
+  }
+}
+
+.mat-card-avatar{
+  width: 15vmin;
+  height: 15vmin;
+  border: solid 2px #d05059;
+  @include media-min("tablet-up") {
+    width: 7vmin;
+    height: 7vmin;
+    margin-bottom: 2%;
+  }
+}
+
+.mat-card-title{
+  font-size: medium;
+  @include media-min("tablet-up") {
+    font-size : 4vmin;
+  }
+  @include media-min("desktop-sm") {
+    font-size : 3vmin;
+  }
+}
+
+.buttonHeaderContent{
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+
+  button{
+    padding: 0;
+    margin: 0 0 5% 0;
+    background-color: #E1E1E1;
+    color: #2e2e2f;
+    border: 1px solid #b7b7b7;
+    @include media-min("tablet-up") {
+      margin: 5% 25% 25% 0;
+      width: 70%;
+      height: 70%;
+      .mat-icon{
+        font-size: 4vmin;
+      }
+    }
+  }
+}
+
+//TEXT
+.mat-card-content{
+  padding: 5% 0% 1% 0%;
+  font-size: medium;
+  @include media-min("tablet-up") {
+    font-size : 3vmin;
+  }
+}
+
+//IMAGE / GIF
+.mat-card-image{
+  margin-bottom: 0;
+}
+//COMMENT
+.mat-card-footer{
+  width: 100%;
+  margin: 0 1%;
+}
+
+//-----------EMOTIONS
+
+.emotions{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #30425f;
+  font-size: x-large;
+  div{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 5%;
+  }
+  @include media-min("tablet-up") {
+    font-size: 5vmin;
+  }
+  @include media-min("desktop-sm") {
+    font-size : 4vmin;
+  }
+}
+
+//-----------COMMENTAIRES
+.mat-card-footer{
+  h2{
+    margin-top: 2%;
+    font-size: large;
+    @include media-min("tablet-up") {
+      font-size: 3vmin;
+    }
+  }
+
+  .mat-card{
+    width: 85%;
+    margin: 4% auto;
+    padding: 3% 3% 0% 3%;
+    border: 1px solid #d05059;
+    box-shadow: 1px 1px 3px #d05059;
+  }
+
+  .mat-card-header{
+    margin-bottom: 2%;
+  }
+
+  .mat-card-avatar{
+    width: 10vmin;
+    height: 10vmin;
+    border: solid 1px #d05059;
+    @include media-min("desktop-sm") {
+      width: 5vmin;
+      height: 5vmin;
+    }
+  }
+
+  .mat-card-title{
+    font-size: medium;
+    @include media-min("tablet-up") {
+      font-size: 3.8vmin;
+    }
+    @include media-min("desktop-sm") {
+      font-size : 3vmin;
+    }
+  }
+  .mat-card-content{
+    padding: 0;
+    margin: 1% auto 0% auto;
+    p{
+      font-size: small;
+      @include media-min("tablet-up") {
+        font-size: 3.5vmin;
+        margin-bottom: 1%;
+      }
+      @include media-min("desktop-sm") {
+        font-size : 3vmin;
+      }
+    }
+    img{
+      width: 30%;
+      @include media-min("tablet-up") {
+        width: 45%;
+      }
+      @include media-min("desktop-sm") {
+        width: 25%;
+      }
+    }
+  }
+}
+
+
+//-----------MESSAGE si c'est vide ou pas chargé
+.message{
+  width: 85%;
+  background-color: #ffffff98;
+  border: 1px solid #d05059;
+  border-radius: 5%;
+  margin: 5% auto;
+  padding: 2%;
+  @include media-min("tablet-up") {
+    font-size: 3.5vmin;
+    line-height: 150%;
+  }
+  @include media-min("desktop-sm") {
+    font-size: 3vmin;
+    line-height: 140%;
+  }
+}
